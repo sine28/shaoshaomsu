@@ -1,0 +1,1570 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shao Shao MSU - เช่าง่าย แค่ปลายนิ้ว</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #faf9f6 0%, #f5f2ed 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 5%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #87CEEB, #4682B4);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: 0 4px 15px rgba(70, 130, 180, 0.3);
+        }
+
+        .brand-text {
+            font-weight: 700;
+            color: #8B4513;
+        }
+
+        .brand-name {
+            font-size: 24px;
+            line-height: 1;
+        }
+
+        .brand-subtitle {
+            font-size: 16px;
+            color: #DAA520;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 35px;
+        }
+
+        .nav-menu a {
+            color: #555;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-menu a:hover {
+            color: #8B4513;
+        }
+
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background: #8B4513;
+            transition: width 0.3s;
+        }
+
+        .nav-menu a:hover::after {
+            width: 100%;
+        }
+
+        .auth-btn {
+            background: linear-gradient(135deg, #8B4513, #A0522D);
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(139, 69, 19, 0.3);
+        }
+
+        .auth-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(139, 69, 19, 0.4);
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 80px 5% 60px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="%23f0e6d6" opacity="0.3"/><circle cx="75" cy="75" r="1" fill="%23e8dcc6" opacity="0.3"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>') repeat;
+            opacity: 0.5;
+            z-index: -1;
+        }
+
+        .hero-dogs {
+            position: absolute;
+            right: 10%;
+            top: 20%;
+            display: flex;
+            gap: 20px;
+        }
+
+        .hero-dog {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 60px;
+            animation: float 3s ease-in-out infinite alternate;
+        }
+
+        .hero-dog.white {
+            background: linear-gradient(135deg, #f8f8f8, #e8e8e8);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .hero-dog.brown {
+            background: linear-gradient(135deg, #DEB887, #CD853F);
+            box-shadow: 0 10px 30px rgba(205, 133, 63, 0.3);
+            animation-delay: -1.5s;
+        }
+
+        @keyframes float {
+            from { transform: translateY(0px); }
+            to { transform: translateY(-10px); }
+        }
+
+        .hero-tablet {
+            position: absolute;
+            left: 60%;
+            top: 50%;
+            transform: translate(-50%, -50%) rotate(-15deg);
+            width: 80px;
+            height: 100px;
+            background: linear-gradient(135deg, #4682B4, #87CEEB);
+            border-radius: 8px;
+            box-shadow: 0 8px 25px rgba(70, 130, 180, 0.3);
+            z-index: 1;
+        }
+
+        .hero-title {
+            font-size: 64px;
+            font-weight: 800;
+            color: #8B4513;
+            margin-bottom: 20px;
+            letter-spacing: -1px;
+        }
+
+        .hero-subtitle {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 50px;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-bottom: 80px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(#296169);
+            color: white;
+            padding: 18px 40px;
+            border: none;
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 6px 20px rgba(46, 139, 87, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(46, 139, 87, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #296169;
+            padding: 18px 40px;
+            border: 2px solid #296169;
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-secondary:hover {
+            background: #296169;
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        /* Search Section */
+        .search-container {
+            max-width: 800px;
+            margin: 0 auto 80px;
+            padding: 0 5%;
+        }
+
+        .search-box {
+            background: white;
+            border-radius: 50px;
+            padding: 8px;
+            display: flex;
+            gap: 10px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 16px 24px;
+            border: none;
+            outline: none;
+            font-size: 16px;
+            border-radius: 42px;
+            background: transparent;
+        }
+
+        .search-dropdown {
+            padding: 16px 20px;
+            border: none;
+            outline: none;
+            font-size: 14px;
+            background: transparent;
+            cursor: pointer;
+            color: #666;
+            min-width: 120px;
+        }
+
+        .search-btn {
+            background: linear-gradient(135deg, #8B4513, #A0522D);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            transition: all 0.3s;
+        }
+
+        .search-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 15px rgba(139, 69, 19, 0.4);
+        }
+
+        /* Categories */
+        .categories {
+            display: flex;
+            justify-content: center;
+            gap: 80px;
+            margin: 0 5% 50px;
+            flex-wrap: wrap;
+        }
+
+        .category {
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            padding: 50px;
+            border-radius: 20px;
+        }
+
+        .category:hover {
+            transform: translateY(-8px);
+            background: rgba(255,255,255,0.7);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+        }
+
+        .category-icon {
+            width: 80px;
+            height: 80px;
+            background: white;
+            border: 3px solid #8B4513;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            margin: 0 auto 15px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .category:hover .category-icon {
+            background: linear-gradient(135deg, #8B4513, #A0522D);
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .category-name {
+            font-weight: 600;
+            color: #8B4513;
+            font-size: 16px;
+        }
+
+        /* Products Section */
+        .products-section {
+            padding: 0 5% 80px;
+        }
+
+        .section-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: #8B4513;
+            margin-bottom: 50px;
+            text-align: left;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-bottom: 80px;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 24px;
+            padding: 25px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #2E8B57, #228B22);
+            transform: scaleX(0);
+            transition: transform 0.3s;
+        }
+
+        .product-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 45px rgba(0,0,0,0.12);
+        }
+
+        .product-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 11px;
+            font-weight: 600;
+            color: white;
+        }
+
+        .badge-available {
+            background: linear-gradient(135deg, #2E8B57, #228B22);
+        }
+
+        .badge-popular {
+            background: linear-gradient(135deg, #4682B4, #1E90FF);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 160px;
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            margin-bottom: 20px;
+            color: #666;
+        }
+
+        .product-name {
+            font-size: 20px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .product-price {
+            font-size: 24px;
+            font-weight: 700;
+            color: #2E8B57;
+            margin-bottom: 20px;
+        }
+
+        .product-btn {
+            width: 100%;
+            padding: 14px;
+            background: transparent;
+            color: #8B4513;
+            border: 2px solid #8B4513;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .product-btn:hover {
+            background: #8B4513;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* How It Works */
+        .how-it-works {
+            padding: 80px 5%;
+            background: white;
+        }
+
+        .how-title {
+            text-align: center;
+            font-size: 32px;
+            font-weight: 700;
+            color: #8B4513;
+            margin-bottom: 60px;
+        }
+
+        .steps {
+            display: flex;
+            justify-content: space-around;
+            gap: 40px;
+            flex-wrap: wrap;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .step {
+            text-align: center;
+            max-width: 280px;
+            position: relative;
+        }
+
+        .step-number {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #8B4513, #A0522D);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 700;
+            margin: 0 auto 20px;
+            box-shadow: 0 4px 15px rgba(139, 69, 19, 0.3);
+        }
+
+        .step-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            margin: 0 auto 20px;
+            color: #8B4513;
+        }
+
+        .step-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 12px;
+            line-height: 1.4;
+        }
+
+        .step-desc {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        /* Footer */
+        .footer {
+            background: #2c2c2c;
+            color: white;
+            padding: 60px 5% 30px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-section h3 {
+            color: #DAA520;
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+
+        .footer-section a {
+            color: #ccc;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 8px;
+            transition: color 0.3s;
+        }
+
+        .footer-section a:hover {
+            color: #DAA520;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            background: #444;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            transition: all 0.3s;
+        }
+
+        .social-link:hover {
+            background: #DAA520;
+            transform: translateY(-2px);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid #444;
+            color: #999;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 20px;
+                padding: 15px 5%;
+            }
+
+            .nav-menu {
+                flex-wrap: wrap;
+                gap: 20px;
+            }
+
+            .hero-title {
+                font-size: 48px;
+            }
+
+            .hero-dogs,
+            .hero-tablet {
+                display: none;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .search-box {
+                flex-direction: column;
+                gap: 0;
+            }
+
+            .categories {
+                gap: 30px;
+            }
+
+            .steps {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+
+
+        /* Products Grid */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 24px;
+            padding: 25px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #8B4513, #A0522D);
+            transform: scaleX(0);
+            transition: transform 0.3s;
+        }
+
+        .product-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 45px rgba(0,0,0,0.12);
+        }
+
+        .product-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 11px;
+            font-weight: 600;
+            color: white;
+        }
+
+        .badge-recommended {
+            background: linear-gradient(135deg, #8BC34A, #689F38);
+        }
+
+        .badge-new {
+            background: linear-gradient(135deg, #FF9800, #F57C00);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-image img {
+            width: 80%;
+            height: 80%;
+            object-fit: contain;
+        }
+
+        .ipad-image {
+            width: 150px;
+            height: 200px;
+            background: linear-gradient(135deg, #FF6B6B, #4ECDC4, #45B7D1, #96CEB4, #FFEAA7);
+            border-radius: 20px;
+            border: 8px solid #333;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .laptop-image {
+            width: 180px;
+            height: 120px;
+            position: relative;
+        }
+
+        .laptop-screen {
+            width: 100%;
+            height: 80px;
+            background: #333;
+            border-radius: 8px 8px 0 0;
+            position: relative;
+            border: 3px solid #666;
+        }
+
+        .laptop-base {
+            width: 100%;
+            height: 40px;
+            background: #D2B48C;
+            border-radius: 0 0 12px 12px;
+            position: relative;
+        }
+
+        .powerbank-image {
+            width: 100px;
+            height: 60px;
+            background: #F5F5DC;
+            border-radius: 15px;
+            position: relative;
+            border: 2px solid #D3D3D3;
+        }
+
+        .cable-image {
+            width: 120px;
+            height: 120px;
+            position: relative;
+        }
+
+        .cable-connector {
+            width: 20px;
+            height: 15px;
+            background: #FFE4B5;
+            border-radius: 5px;
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .cable-wire {
+            width: 100px;
+            height: 6px;
+            background: #FFE4B5;
+            border-radius: 3px;
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%) rotate(-20deg);
+        }
+
+        .product-name {
+            font-size: 20px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .product-price {
+            font-size: 18px;
+            font-weight: 700;
+            color: #8B4513;
+            margin-bottom: 20px;
+        }
+
+        .product-btn {
+            width: 100%;
+            padding: 14px;
+            background: transparent;
+            color: #8B4513;
+            border: 2px solid #8B4513;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .product-btn:hover {
+            background: #8B4513;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-top: 50px;
+        }
+
+        .pagination-btn {
+            width: 40px;
+            height: 40px;
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+
+        .pagination-btn:hover,
+        .pagination-btn.active {
+            background: #8B4513;
+            color: white;
+            border-color: #8B4513;
+        }
+
+        .pagination-btn.nav {
+            background: #8B4513;
+            color: white;
+            border-color: #8B4513;
+        }
+
+        .pagination-btn.nav:hover {
+            background: #A0522D;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .nav-menu {
+                flex-wrap: wrap;
+                gap: 15px;
+            }
+
+            .hero-section {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .hero-dog {
+                position: relative;
+                right: auto;
+                top: auto;
+                transform: none;
+                width: 200px;
+                height: 200px;
+                font-size: 80px;
+                margin-top: 30px;
+            }
+
+            .hero-title {
+                font-size: 36px;
+            }
+
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .category-tabs {
+                justify-content: center;
+            }
+        }
+    body { font-family: sans-serif; }
+    .filters button { margin: 5px; padding: 5px 10px; }
+    .card { display: inline-block; width: 200px; margin: 10px; border: 1px solid #ccc; padding: 10px; border-radius: 5px; }
+    .card img { width: 100%; height: 150px; object-fit: cover; }
+
+#auth-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(8px);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    padding: 20px;
+    animation: modalFadeIn 0.3s ease;
+}
+
+@keyframes modalFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.modal-content {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+    width: 100%;
+    max-width: 450px;
+    position: relative;
+    overflow: hidden;
+    animation: modalSlideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes modalSlideUp {
+    from {
+        transform: translateY(30px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.close-modal {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: rgba(0, 0, 0, 0.05);
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    font-size: 20px;
+    cursor: pointer;
+    color: #666;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+}
+
+.close-modal:hover {
+    background: rgba(139, 69, 19, 0.1);
+    color: #8B4513;
+    transform: scale(1.1);
+}
+
+.auth-slider {
+    display: flex;
+    width: 200%;
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.auth-form {
+    width: 50%;
+    padding: 50px 40px 40px 40px;
+    text-align: center;
+    min-height: 500px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.auth-form h2 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #8B4513;
+    margin-bottom: 10px;
+    letter-spacing: -0.5px;
+}
+
+.auth-form .subtitle {
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 35px;
+    line-height: 1.5;
+}
+
+.auth-form input {
+    width: 100%;
+    padding: 16px 20px;
+    border: 2px solid #f0f0f0;
+    border-radius: 12px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    background: #fafafa;
+    box-sizing: border-box;
+    margin: 10px 0;
+}
+
+.auth-form input:focus {
+    outline: none;
+    border-color: #8B4513;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(139, 69, 19, 0.1);
+}
+
+.auth-form button {
+    width: 100%;
+    padding: 16px;
+    background: linear-gradient(135deg, #8B4513, #A0522D);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin: 20px 0;
+    box-shadow: 0 4px 15px rgba(139, 69, 19, 0.3);
+}
+
+.auth-form button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(139, 69, 19, 0.4);
+}
+
+.switch-link {
+    background: none !important;
+    border: none !important;
+    color: #8B4513 !important;
+    cursor: pointer;
+    font-size: 14px;
+    margin-top: 15px;
+    padding: 10px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    box-shadow: none !important;
+}
+
+.switch-link:hover {
+    background: rgba(139, 69, 19, 0.05) !important;
+    color: #A0522D !important;
+    transform: none !important;
+}
+
+.auth-slider {
+    display: flex;
+    width: 200%;
+    transition: transform 0.4s ease-in-out;
+}
+.auth-form {
+    width: 50%;
+    padding: 30px;
+    box-sizing: border-box;
+    text-align: center;
+}
+.auth-form button {
+    padding: 10px 20px;
+    background: #8B4513;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.auth-form input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+}
+.switch-link {
+    background: none;
+    border: none;
+    color: #2E8B57;
+    cursor: pointer;
+    margin-top: 10px;
+}
+#transaction-section {
+    margin-top: 20px;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background: #fafafa;
+}
+.auth-container {
+    display: flex;           /* จัดเรียงเป็นแนวนอน */
+    align-items: center;     /* จัดให้อยู่กึ่งกลางแนวตั้ง */
+    gap: 15px;               /* ช่องว่างระหว่างปุ่มกับไอคอน */
+}
+
+.auth-btn {
+    padding: 8px 16px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.user-section {
+    width: 40px;
+    height: 40px;
+}
+
+.profile-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="logo-container">
+           <img src="image/10.png" width="100">
+            <div class="brand-text">
+            </div>
+        </div>
+        
+        <nav>
+            <ul class="nav-menu">
+                <li><a href="index.html">หน้าหลัก</a></li>
+                <li><a href="menu/p1.html">เช่าอุปกรณ์</a></li>
+                <li><a href="menu/p3.html">ปล่อยเช่าอุปกรณ์</a></li>
+                <li><a href="menu/track.html">ติดตามสถานะการเช่า</a></li>
+                <li><a href="menu/admin.html">ระบบผู้ดูแล</a></li>
+            </ul>
+        </nav>
+        
+        <!-- ปุ่มและไอคอนผู้ใช้ -->
+        <div class="auth-container">
+            <!-- ปุ่มเข้าสู่ระบบ -->
+            <button class="auth-btn" id="auth-btn">เข้าสู่ระบบ / สมัครสมาชิก</button>
+
+            <!-- ไอคอนผู้ใช้ (แสดงตลอดเวลา) -->
+            <a href="menu/account.html" class="user-link" id="user-section">
+                <div class="user-section">
+                    <img id="headerProfileIcon" class="profile-icon" 
+                         src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImdyYWQiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPjxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiNkMmI0OGMiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNmNGU2ZDMiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48Y2lyY2xlIGN4PSIxMDAiIGN5PSIxMDAiIHI9IjEwMCIgZmlsbD0idXJsKCNncmFkKSIvPjx0ZXh0IHg9IjEwMCIgeT0iMTEwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iNjAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IiM4YjQ1MTMiPvCfkak8L3RleHQ+PC9zdmc+" 
+                         alt="โปรไฟล์" title="คลิกเพื่อไปหน้าบัญชีผู้ใช้">
+                </div>
+            </a>
+        </div>
+
+    </header>
+<div id="auth-modal">
+    <div class="modal-content">
+        <button class="close-modal" id="close-modal">&times;</button>
+        
+        <div class="auth-slider" id="auth-slider">
+            <!-- Login Form -->
+            <div class="auth-form">
+                <h2>เข้าสู่ระบบ</h2>
+                <p class="subtitle">ยินดีต้อนรับกลับ! กรุณาเข้าสู่ระบบเพื่อดำเนินการต่อ</p>
+                
+                <input type="email" id="login-Email" placeholder="อีเมล">
+                <input type="password" id="login-password" placeholder="รหัสผ่าน">
+                <button id="login-btn">เข้าสู่ระบบ</button>
+                
+                <button class="switch-link" id="to-register">
+                    ยังไม่มีบัญชี? <strong>สมัครสมาชิก</strong>
+                </button>
+            </div>
+            
+            <!-- Register Form -->
+            <div class="auth-form">
+                <h2>สมัครสมาชิก</h2>
+                <p class="subtitle">สร้างบัญชีใหม่เพื่อเริ่มใช้งานบริการของเรา</p>
+                
+                <input type="text" id="reg-username" placeholder="ชื่อผู้ใช้">
+                <input type="email" id="reg-email" placeholder="อีเมล">
+                <input type="tel" id="reg-phone" placeholder="เบอร์โทรศัพท์">
+                <input type="password" id="reg-password" placeholder="รหัสผ่าน">
+                <button id="register-btn">สมัครสมาชิก</button>
+                
+                <button class="switch-link" id="to-login">
+                    มีบัญชีแล้ว? <strong>เข้าสู่ระบบ</strong>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="transaction-section" style="display:none;">
+    <h3>ข้อมูลธุรกรรมล่าสุด</h3>
+    <div id="transaction-data">ไม่มีข้อมูลธุรกรรม</div>
+    <button onclick="addTestTransaction()">เพิ่มธุรกรรมตัวอย่าง</button>
+    <button onclick="clearTransaction()">ลบธุรกรรม</button>
+</div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+		<img src="image/10.png" width="420">
+        <h1 class="hero-title">เช่าง่าย แค่ปลายนิ้ว</h1>
+        <p class="hero-subtitle">แพลตฟอร์มเช่าอุปกรณ์เทคโนโลยีสำหรับนิสิตมหาวิทยาลัยมหาสารคาม</p>
+        
+        <div class="hero-buttons">
+           <a href="menu/p1.html"><button class="btn-primary">เช่าอุปกรณ์</button></a>
+           <a href="menu/p3.html"><button class="btn-secondary">ปล่อยเช่าอุปกรณ์</button></a>
+        </div>
+    </section>
+
+    <!-- Search Section -->
+    <section class="search-container">
+        <div class="search-box">
+<input type="text" id="search-input" class="search-input" placeholder="ค้นหาอุปกรณ์ที่ต้องการ...">
+
+
+            <button class="search-btn">
+                <i class="fas fa-search"></i>
+            </button>
+        </div>
+    </section>
+
+    <!-- Categories -->
+<section class="categories">
+    <a href="menu/p1.html?category=iPad" class="category" data-category="ipad">
+        <div class="category-icon">
+            <img src="image/12.png" width="75">
+        </div>
+        <div class="category-name">iPad</div>
+    </a>
+    <a href="menu/p1.html?category=Notebook" class="category" data-category="notebook">
+        <div class="category-icon">
+            <img src="image/14.png" width="75">
+        </div>
+        <div class="category-name">Notebook</div>
+    </a>
+    <a href="menu/p1.html?category=Powerbank" class="category" data-category="powerbank">
+        <div class="category-icon">
+            <img src="image/15.png" width="75">
+        </div>
+        <div class="category-name">Powerbank</div>
+    </a>
+    <a href="menu/p1.html?category=สายชาร์จ" class="category" data-category="cable">
+        <div class="category-icon">
+            <img src="image/13.png" width="75">
+        </div>
+        <div class="category-name">สายชาร์จ</div>
+    </a>
+</section>
+
+    <!-- Products Section -->
+    <section class="products-section">
+        <h0 class="section-title">รายการล่าสุด</h0>
+    </section>
+	<section class="products-grid" id="productList">
+    <!-- Products from localStorage จะถูกเพิ่มที่นี่แบบ dynamic -->
+	</section>
+
+
+<script>
+document.getElementById("search-input").addEventListener("keyup", function() {
+    let filter = this.value.toLowerCase();
+    let items = document.querySelectorAll(".product-card"); // ใช้รายการสินค้าแทน .item
+
+    items.forEach(function(item) {
+        let text = item.textContent.toLowerCase();
+        if (text.includes(filter)) {
+            item.style.display = "";
+        } else {
+            item.style.display = "none";
+        }
+    });
+});
+
+let rentals = JSON.parse(localStorage.getItem('rentals') || '[]');
+let currentCategory = 'ทั้งหมด';
+
+function renderProducts() {
+    const container = document.getElementById('productList');
+    container.innerHTML = '';
+
+    // กรองตามหมวดหมู่
+    let filtered = currentCategory === 'ทั้งหมด'
+        ? rentals
+        : rentals.filter(r => r.category === currentCategory);
+
+    // เอาเฉพาะ 3 รายการล่าสุด (ข้อมูลใหม่สุดอยู่บน)
+    let latest = filtered.slice(-5).reverse();
+
+    latest.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'product-card';
+        div.setAttribute('data-category', item.category);
+        div.innerHTML = `
+            <div class="product-image">
+                <img src="${item.images[0] || ''}" alt="${item.deviceName}">
+            </div>
+            <h3 class="product-name">${item.deviceName}</h3>
+            <div class="product-price">${item.pricePerDay} บาท/วัน</div>
+	         <a href="menu/detail.html?id=${item.id}"><button class="product-btn" onclick="viewDetail(${item.id})">ดูรายละเอียด</button></a>
+            
+        `;
+        container.appendChild(div);
+    });
+}
+
+function selectCategory(category, element) {
+    currentCategory = category;
+
+    // UI: เปลี่ยน tab ที่ active
+    document.querySelectorAll('.category-tab').forEach(tab => tab.classList.remove('active'));
+    element.classList.add('active');
+
+    // Filter และ render ใหม่
+    renderProducts();
+}
+
+function viewDetail(id) {
+    window.location.href = `detail.html?id=${id}`;
+}
+
+// เรียกตอนเริ่มโหลด
+renderProducts();
+
+const modal = document.getElementById("auth-modal");
+const slider = document.getElementById("auth-slider");
+const authBtn = document.querySelector(".auth-btn");
+const txSection = document.getElementById("transaction-section");
+const txData = document.getElementById("transaction-data");
+
+// เก็บธุรกรรม
+function saveTransaction(Email, data) {
+    localStorage.setItem("transaction_" + Email, JSON.stringify(data));
+}
+
+// ดึงธุรกรรม
+function getTransaction(Email) {
+    let data = localStorage.getItem("transaction_" + Email);
+    return data ? JSON.parse(data) : null;
+}
+
+// ลบธุรกรรม
+function clearTransaction() {
+    let currentUser = JSON.parse(localStorage.getItem("currentUser") || "{}");
+    if (currentUser.Email) {
+        localStorage.removeItem("transaction_" + currentUser.Email);
+        showTransaction(currentUser.Email);
+        alert("ลบธุรกรรมแล้ว");
+    }
+}
+
+// แสดงธุรกรรม
+function showTransaction(Email) {
+    let tx = getTransaction(Email);
+    if (tx) {
+        txData.innerHTML = `
+            <p>ประเภท: ${tx.type}</p>
+            <p>จำนวน: ${tx.amount} บาท</p>
+            <p>วันที่: ${tx.date}</p>
+        `;
+    } else {
+        txData.innerHTML = "ไม่มีข้อมูลธุรกรรม";
+    }
+}
+
+// เพิ่มธุรกรรมทดสอบ
+function addTestTransaction() {
+    let currentUser = JSON.parse(localStorage.getItem("currentUser") || "{}");
+    if (currentUser.Email) {
+        let newTx = {
+            type: "ชำระค่าธรรมเนียม",
+            amount: Math.floor(Math.random() * 500) + 100,
+            date: new Date().toLocaleString()
+        };
+        saveTransaction(currentUser.Email, newTx);
+        showTransaction(currentUser.Email);
+        alert("เพิ่มธุรกรรมแล้ว");
+    }
+}
+
+// เปิด popup
+authBtn.addEventListener("click", () => {
+    if (localStorage.getItem("currentUser")) {
+        if (confirm("ต้องการออกจากระบบหรือไม่?")) {
+            localStorage.removeItem("currentUser");
+            authBtn.textContent = "เข้าสู่ระบบ / สมัครสมาชิก";
+            txSection.style.display = "none";
+            alert("ออกจากระบบแล้ว");
+        }
+    } else {
+        modal.style.display = "flex";
+    }
+});
+
+// ปิด popup เมื่อคลิคนอก
+window.addEventListener("click", e => {
+    if (e.target === modal) modal.style.display = "none";
+});
+
+// ไปหน้าสมัคร
+document.getElementById("to-register").addEventListener("click", () => {
+    slider.style.transform = "translateX(-50%)";
+});
+
+// ไปหน้าเข้าสู่ระบบ
+document.getElementById("to-login").addEventListener("click", () => {
+    slider.style.transform = "translateX(0%)";
+});
+
+// สมัครสมาชิก
+document.getElementById("register-btn").addEventListener("click", () => {
+    let username = document.getElementById("reg-username").value.trim();
+    let Email = document.getElementById("reg-email").value.trim();
+    let phone = document.getElementById("reg-phone").value.trim();
+    let password = document.getElementById("reg-password").value.trim();
+   
+
+    if (!username || !password || !phone || !Email) {
+        alert("กรุณากรอกข้อมูลให้ครบ");
+        return;
+    }
+
+    let users = JSON.parse(localStorage.getItem("users") || "[]");
+    if (users.find(u => u.Email === Email)) {
+        alert("มีผู้ใช้อีเมลนี้แล้ว");
+        return;
+    }
+
+    users.push({ username, password, phone, Email });
+    localStorage.setItem("users", JSON.stringify(users));
+
+    alert("สมัครสมาชิกสำเร็จ! กรุณาเข้าสู่ระบบ");
+    slider.style.transform = "translateX(0%)";
+});
+
+// เข้าสู่ระบบ
+document.getElementById("login-btn").addEventListener("click", () => {
+    let Email = document.getElementById("login-Email").value.trim();
+    let password = document.getElementById("login-password").value.trim();
+
+    if (!Email || !password) {
+        alert("กรุณากรอกอีเมลและรหัสผ่าน");
+        return;
+    }
+
+    let users = JSON.parse(localStorage.getItem("users") || "[]");
+    let user = users.find(u => u.Email === Email && u.password === password);
+
+    if (user) {
+        localStorage.setItem("currentUser", JSON.stringify(user));
+        authBtn.textContent = "ออกจากระบบ (" + user.username + ")";
+        modal.style.display = "none";
+        txSection.style.display = "block";
+        showTransaction(user.Email);  // <-- ใช้ Email แทน studentId
+        alert("เข้าสู่ระบบสำเร็จ! ยินดีต้อนรับ " + user.username);
+    } else {
+        alert("อีเมลหรือรหัสผ่านไม่ถูกต้อง");
+    }
+});
+
+
+// โหลดสถานะตอนเปิดหน้า
+window.onload = () => {
+    let currentUser = JSON.parse(localStorage.getItem("currentUser") || "{}");
+    if (currentUser.Email) { 
+        authBtn.textContent = "ออกจากระบบ (" + currentUser.username + ")";
+        txSection.style.display = "block";
+        showTransaction(currentUser.Email);
+    }
+};
+
+
+</script>
+
+    <!-- How It Works -->
+    <section class="how-it-works">
+        <h2 class="how-title">วิธีการใช้งาน 3 ขั้นตอน</h2>
+        <div class="steps">
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-icon">
+                    <i class="fas fa-search"></i>
+                </div>
+                <h3 class="step-title">ค้นหาอุปกรณ์<br>ที่ต้องการ</h3>
+                <p class="step-desc">เลือกอุปกรณ์ที่คุณต้องการจากหมวดหมู่ต่างๆ หรือค้นหาด้วยคำสำคัญ</p>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-icon">
+                    <i class="fas fa-comments"></i>
+                </div>
+                <h3 class="step-title">ติดต่อผู้ปล่อยเช่า<br>ผ่านระบบ</h3>
+                <p class="step-desc">สื่อสารกับเจ้าของอุปกรณ์ผ่านระบบแชทในเว็บไซต์อย่างปลอดภัย</p>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-icon">
+                    <i class="fas fa-handshake"></i>
+                </div>
+                <h3 class="step-title">นัดรับ-จัดส่ง<br>และจ่ายเงินผ่านแอป</h3>
+                <p class="step-desc">นัดหมายสถานที่รับ-ส่งและชำระเงินผ่านระบบอย่างสะดวกและปลอดภัย</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">           
+           <div class="footer-section">
+                <h3>ติดต่อเรา</h3>
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <span>shaoshaomsu@gmail.com</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fab fa-line"></i>
+                        <span>@719gvwau</span>
+                    </div>
+		    <div class="contact-item">
+                        <i class="fab fa-facebook-f"></i>
+                        <span>Shao Shao MSU</span>
+		    </div>	
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3>เกี่ยวกับเรา</h3>
+                <p style="color: #ccc; font-size: 14px; line-height: 1.6;">
+                    Shao Shao MSU เป็นแพลตฟอร์มเช่าอุปกรณ์เทคโนโลยีสำหรับนิสิตและบุคลากรมหาวิทยาลัยมหาสารคาม 
+                    ที่ช่วยให้การเข้าถึงเทคโนโลยีเป็นเรื่องง่ายและประหยัด
+                </p>
+            </div>
+        </div>
+        
+<div class="footer-bottom">
+    <p>&copy; 2024 Shao Shao MSU</p>
+</div>
+</footer>
+</body>
+</html>
