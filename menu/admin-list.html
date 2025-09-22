@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>รายการเช่าทั้งหมด</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      background-color: #f9fafb;
+      padding: 20px;
+      max-width: 800px;
+      margin: auto;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #333;
+    }
+    .rental-card {
+      background: #fff;
+      padding: 16px;
+      margin-bottom: 16px;
+      border-radius: 12px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .rental-card h3 {
+      margin: 0 0 10px;
+      color: #1f2937;
+    }
+    .info {
+      font-size: 14px;
+      color: #4b5563;
+    }
+    .info span {
+      display: inline-block;
+      margin-right: 16px;
+    }
+    .status-tag {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: bold;
+      color: white;
+      background-color: #6b7280;
+    }
+    .status-1 { background-color: #fbbf24; }
+    .status-2 { background-color: #60a5fa; }
+    .status-3 { background-color: #10b981; }
+    .status-4 { background-color: #9ca3af; }
+    .btn-view {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 8px 16px;
+      background-color: #3b82f6;
+      color: white;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 14px;
+    }
+    .btn-view:hover {
+      background-color: #2563eb;
+    }
+  </style>
+</head>
+<body>
+
+<h1>รายการเช่าทั้งหมด</h1>
+<div id="rentalList"></div>
+
+<script>
+function getStatusText(status) {
+  switch(status) {
+    case 1: return "รอผู้ปล่อยเช่ายืนยัน";
+    case 2: return "นัดรับ-ส่งอุปกรณ์";
+    case 3: return "กำลังใช้งาน";
+    case 4: return "คืนอุปกรณ์เรียบร้อย";
+    default: return "ไม่ทราบสถานะ";
+  }
+}
+
+function loadRentalList() {
+  const container = document.getElementById('rentalList');
+  const requests = JSON.parse(localStorage.getItem('rentalRequests') || '[]');
+
+  if (requests.length === 0) {
+    container.innerHTML = '<p>ไม่มีรายการเช่าในระบบ</p>';
+    return;
+  }
+
+  container.innerHTML = [...requests].reverse().map(req => {
+    const step = Number(req.statusStep) || 1;
+    const statusClass = `status-${step}`;
+    return `
+      <div class="rental-card">
+        <h3>${req.deviceName || '-'}</h3>
+        <div class="info">
+          <span>👤 ${req.ownerName || '-'}</span>
+          <span>📅 ${req.startDate || '-'} - ${req.endDate || '-'}</span>
+          <span class="status-tag ${statusClass}">${getStatusText(step)}</span>
+        </div>
+        <a class="btn-view" href="admin.html?id=${req.id}">ดูรายละเอียด</a>
+      </div>
+    `;
+  }).join('');
+}
+
+loadRentalList();
+</script>
+
+</body>
+</html>

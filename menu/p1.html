@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shao Shao MSU - เช่าอุปกรณ์</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background:linear-gradient(135deg,#faf9f6 0%,#f5f2ed 100%); color:#333; min-height:100vh; }
+  .container { max-width:1200px; margin:0 auto; padding:20px; }
+
+  /* Header */
+  .header { display:flex; justify-content:space-between; align-items:center; padding:20px 0; background:rgba(255,255,255,0.95); backdrop-filter:blur(10px); box-shadow:0 2px 20px rgba(0,0,0,0.05); position:sticky; top:0; z-index:100; }
+  .logo-container img { width:100px; }
+  .nav-menu { display:flex; list-style:none; gap:35px; }
+  .nav-menu a { color:#8B7355; text-decoration:none; font-weight:500; font-size:16px; transition: color 0.3s; }
+  .nav-menu a:hover, .nav-menu a.active { color:#A0522D; }
+  .auth-btn { background:#8B4513; color:white; padding:12px 24px; border:none; border-radius:25px; cursor:pointer; transition:all 0.3s; }
+  .auth-btn:hover { background:#A0522D; transform:translateY(-2px); }
+
+  /* Hero */
+  .hero-section { display:flex; align-items:center; flex-wrap:wrap; margin-bottom:40px; text-align:center; }
+  .hero-title { font-size:48px; font-weight:800; color:#8B4513; }
+  .hero-subtitle { font-size:18px; color:#666; margin-bottom:20px; }
+  .hero-section img { width:420px; max-width:100%; margin:auto; }
+
+  /* Category Tabs */
+  .category-tabs { display:flex; gap:15px; flex-wrap:wrap; justify-content:center; margin-bottom:40px; }
+  .category-tab { padding:12px 24px; background:white; border:2px solid #ddd; border-radius:25px; cursor:pointer; font-weight:500; transition:0.3s; }
+  .category-tab:hover, .category-tab.active { background:#8B4513; color:white; border-color:#8B4513; transform:translateY(-2px); }
+
+  /* Usage Filter */
+  .filter-section { text-align:center; padding:30px; margin-bottom:40px; }
+  .filter-cards { display:flex; justify-content:center; flex-wrap:wrap; gap:20px; margin-top:20px; }
+  .card { width:200px; padding:20px; border-radius:10px; color:black; cursor:pointer; transition:0.3s; position:relative; }
+  .card .icon { font-size:40px; display:block; margin-bottom:10px; }
+  .card:hover { transform:scale(1.05); opacity:0.8; }
+  .card.selected { opacity:0.7; border:3px solid #8B4513; }
+  .work { background:#FAF0E6; }
+  .edit { background:#FFEFD5; }
+  .game { background:#FFE4B5; }
+  .special { background:#FFDEAD; }
+
+  /* Products Grid */
+  .products-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:30px; margin-bottom:50px; }
+  .product-card { background:white; border-radius:24px; padding:25px; box-shadow:0 8px 32px rgba(0,0,0,0.08); transition:all 0.3s; position:relative; overflow:hidden; }
+  .product-card::before { content:''; position:absolute; top:0; left:0; right:0; height:4px; background:linear-gradient(90deg,#8B4513,#A0522D); transform:scaleX(0); transition:transform 0.3s; }
+  .product-card:hover::before { transform:scaleX(1); }
+  .product-card:hover { transform:translateY(-8px); box-shadow:0 15px 45px rgba(0,0,0,0.12); }
+  
+  .product-image { width:100%; height:200px; background:#f8f9fa; border-radius:16px; display:flex; align-items:center; justify-content:center; margin-bottom:20px; overflow:hidden; }
+  .product-image img { width:100%; height:100%; object-fit:cover; border-radius:16px; }
+  .placeholder-icon { font-size:48px; color:#ccc; }
+  
+  .product-category { font-size:12px; color:#8B4513; background:rgba(139,69,19,0.1); padding:4px 12px; border-radius:12px; display:inline-block; margin-bottom:10px; }
+  .product-name { font-size:20px; font-weight:700; margin-bottom:8px; color:#333; }
+  .product-usage { font-size:14px; color:#666; margin-bottom:10px; }
+  .product-price { font-size:18px; font-weight:700; color:#8B4513; margin-bottom:10px; }
+  .product-location { font-size:14px; color:#888; margin-bottom:10px; }
+  .product-owner { font-size:14px; color:#666; margin-bottom:15px; }
+  .product-description { font-size:14px; color:#666; line-height:1.4; margin-bottom:20px; overflow:hidden; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; }
+  
+  .product-actions { display:flex; gap:10px; flex-wrap:wrap; justify-content:center; }
+  .product-btn { width:100%; max-width:200px; padding:14px; background:transparent; color:#8B4513; border:2px solid #8B4513; border-radius:25px; font-weight:600; cursor:pointer; transition:all 0.3s; text-decoration:none; text-align:center; font-size:16px; }
+  .product-btn:hover { background:#8B4513; color:white; transform:translateY(-2px); }
+
+  .no-data { text-align:center; padding:60px 20px; color:#666; }
+  .no-data h3 { font-size:24px; margin-bottom:10px; }
+  .no-data p { font-size:16px; margin-bottom:30px; }
+  .add-rental-btn { background:#8B4513; color:white; padding:16px 32px; border:none; border-radius:30px; font-size:16px; font-weight:600; cursor:pointer; transition:all 0.3s; text-decoration:none; display:inline-block; }
+  .add-rental-btn:hover { transform:translateY(-3px); box-shadow:0 6px 20px rgba(139,69,19,0.4); }
+
+  .image-gallery { display:flex; gap:5px; overflow-x:auto; margin-bottom:15px; }
+  .image-gallery img { width:60px; height:60px; object-fit:cover; border-radius:8px; flex-shrink:0; cursor:pointer; transition:transform 0.3s; }
+  .image-gallery img:hover { transform:scale(1.1); }
+
+  .refresh-btn { position:fixed; bottom:20px; right:20px; background:#8B4513; color:white; border:none; width:60px; height:60px; border-radius:50%; font-size:24px; cursor:pointer; box-shadow:0 4px 15px rgba(139,69,19,0.3); transition:all 0.3s; z-index:1000; }
+  .refresh-btn:hover { transform:scale(1.1); background:#A0522D; }
+
+  @media(max-width:768px){ 
+    .hero-section { flex-direction:column; } 
+    .products-grid { grid-template-columns:1fr; } 
+    .category-tabs { justify-content:center; }
+    .product-actions { flex-direction:column; align-items:center; }
+    .product-btn { max-width:none; width:100%; }
+  }
+
+  /* Modal สำหรับแสดงรูปภาพขยาย */
+  .image-modal { 
+    position:fixed; top:0; left:0; width:100%; height:100%; 
+    background:rgba(0,0,0,0.8); display:none; align-items:center; 
+    justify-content:center; z-index:2000; cursor:pointer; 
+  }
+  .image-modal img { 
+    max-width:90%; max-height:90%; object-fit:contain; 
+    border-radius:10px; box-shadow:0 10px 30px rgba(0,0,0,0.5); 
+  }
+  .image-modal.show { display:flex; }
+</style>
+</head>
+<body>
+<div class="container">
+  <!-- Header -->
+  <header class="header">
+    <div class="logo-container"><img src="../image/10.png" alt="Logo"></div>
+    <nav>
+      <ul class="nav-menu">
+        <li><a href="../index.html">หน้าหลัก</a></li>
+        <li><a href="p1.html" class="active">เช่าอุปกรณ์</a></li>
+        <li><a href="p3.html">ปล่อยเช่าอุปกรณ์</a></li>
+        <li><a href="track.html">ติดตามสถานะการเช่า</a></li>
+        <li><a href="admin.html">ระบบผู้ดูแล</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Hero -->
+  <main class="main-content">
+    <section class="hero-section">
+      <div>
+        <h1 class="hero-title">เช่าอุปกรณ์</h1>
+        <p class="hero-subtitle">เลือกดูชนิดอุปกรณ์ตามที่คุณต้องการ</p>
+      </div>
+      <img src="../image/11.png" alt="Hero Image">
+    </section>
+
+    <!-- Usage Filter -->
+    <section class="filter-section">
+      <h2>เลือกประเภทการใช้งานของคุณ</h2>
+      <p>เพื่อให้เราแนะนำอุปกรณ์ที่เหมาะกับคุณมากที่สุด</p>
+      <div class="filter-cards">
+        <div class="card work" onclick="selectUsage('work', this)">
+          <h3>ทำงานทั่วไป</h3>
+          <p>งานเอกสาร ประชุมออนไลน์</p>
+        </div>
+        <div class="card edit" onclick="selectUsage('edit', this)">
+          <h3>ตัดต่อ / กราฟิก</h3>
+          <p>งานวิดีโอ กราฟิก</p>
+        </div>
+        <div class="card game" onclick="selectUsage('game', this)">
+          <h3>เล่นเกม / มัลติมีเดีย</h3>
+          <p>ความบันเทิงเต็มรูปแบบ</p>
+        </div>
+        <div class="card special" onclick="selectUsage('special', this)">
+          <h3>งานเฉพาะทาง</h3>
+          <p>งานสตูดิโอ วิจัย</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Category Tabs -->
+    <section class="category-tabs">
+      <div class="category-tab active" onclick="selectCategory('ทั้งหมด', this)">ทั้งหมด</div>
+      <div class="category-tab" onclick="selectCategory('iPad', this)">iPad</div>
+      <div class="category-tab" onclick="selectCategory('Notebook', this)">Notebook</div>
+      <div class="category-tab" onclick="selectCategory('Powerbank', this)">Powerbank</div>
+      <div class="category-tab" onclick="selectCategory('สายชาร์จ', this)">สายชาร์จ</div>
+    </section>
+
+    <!-- Products Grid -->
+    <section class="products-grid" id="productList"></section>
+  </main>
+</div>
+
+<!-- Refresh Button -->
+<button class="refresh-btn" onclick="loadRentals()" title="รีเฟรชข้อมูล">
+  <i class="fas fa-sync-alt"></i>
+</button>
+
+<!-- Image Modal -->
+<div class="image-modal" id="imageModal" onclick="closeImageModal()">
+  <img id="modalImage" src="" alt="">
+</div>
+
+<script>
+let rentals = [];
+let currentCategory = 'ทั้งหมด';
+let currentUsage = 'all';
+
+// โหลดข้อมูลจาก localStorage
+function loadRentals() {
+  console.log('Loading rentals from localStorage...');
+  try {
+    const data = localStorage.getItem('rentals');
+    console.log('Raw data:', data);
+    
+    if (data) {
+      rentals = JSON.parse(data);
+      console.log('Parsed rentals:', rentals);
+    } else {
+      rentals = [];
+      console.log('No data found');
+    }
+  } catch (error) {
+    console.error('Error loading rentals:', error);
+    rentals = [];
+  }
+  
+  renderProducts();
+}
+
+function renderProducts() {
+  console.log('Rendering products...', { rentals: rentals.length, currentCategory, currentUsage });
+  
+  const container = document.getElementById('productList');
+  container.innerHTML = '';
+
+  let filtered = [...rentals]; // สร้าง copy ของ array
+  
+  if (currentCategory !== 'ทั้งหมด') {
+    filtered = filtered.filter(r => r.category === currentCategory);
+  }
+  
+  if (currentUsage !== 'all') {
+    filtered = filtered.filter(r => r.usageType === currentUsage);
+  }
+
+  console.log('Filtered products:', filtered.length);
+
+  if (filtered.length === 0) {
+    const noDataDiv = document.createElement('div');
+    noDataDiv.className = 'no-data';
+    noDataDiv.innerHTML = `
+      <h3>ยังไม่มีอุปกรณ์ให้เช่า</h3>
+      <p>เป็นคนแรกที่เพิ่มอุปกรณ์ให้เช่า</p>
+      <a href="p3.html" class="add-rental-btn">เพิ่มอุปกรณ์ให้เช่า</a>
+    `;
+    container.appendChild(noDataDiv);
+    return;
+  }
+
+  const usageTypeMap = {
+    'work': 'ทำงานทั่วไป',
+    'edit': 'ตัดต่อ / กราฟิก',
+    'game': 'เล่นเกม / มัลติมีเดีย',
+    'special': 'งานเฉพาะทาง'
+  };
+
+  filtered.forEach(item => {
+    const div = document.createElement('div');
+    div.className = 'product-card';
+    div.setAttribute('data-category', item.category);
+    
+    // สร้าง image gallery
+    let imageGallery = '';
+    if (item.images && item.images.length > 1) {
+      imageGallery = `
+        <div class="image-gallery">
+          ${item.images.map(img => `<img src="${img}" alt="รูปอุปกรณ์" onclick="showImageModal('${img}')">`).join('')}
+        </div>
+      `;
+    }
+
+    div.innerHTML = `
+      <div class="product-image">
+        ${item.images && item.images.length > 0 
+          ? `<img src="${item.images[0]}" alt="${item.deviceName}" onclick="showImageModal('${item.images[0]}')">`
+          : `<div class="placeholder-icon">📱</div>`
+        }
+      </div>
+
+      ${imageGallery}
+
+      <div class="product-category">${item.category}</div>
+      <h3 class="product-name">${item.deviceName}</h3>
+      <div class="product-usage">${usageTypeMap[item.usageType] || item.usageType}</div>
+      <div class="product-price">${item.pricePerDay?.toLocaleString() || 0} บาท/วัน</div>
+      <div class="product-location">📍 ${item.location || 'ไม่ระบุ'}</div>
+      <div class="product-owner">👤 ${item.ownerName || 'ไม่ระบุ'}</div>
+      <div class="product-description">${item.description || 'ไม่มีรายละเอียด'}</div>
+      
+      <div class="product-actions">
+        <button class="product-btn" onclick="viewDetails(${item.id})">
+          ดูรายละเอียด
+        </button>
+      </div>
+    `;
+    container.appendChild(div);
+  });
+}
+
+function selectCategory(category, element) {
+  currentCategory = category;
+  document.querySelectorAll('.category-tab').forEach(tab => tab.classList.remove('active'));
+  element.classList.add('active');
+  renderProducts();
+}
+
+function selectUsage(usage, element) {
+  // ลบ selected class จากทุก card
+  document.querySelectorAll('.filter-cards .card').forEach(card => card.classList.remove('selected'));
+  
+  // ถ้าเลือก usage เดิมอีกครั้ง ให้เคลียร์ filter
+  if (currentUsage === usage) {
+    currentUsage = 'all';
+  } else {
+    currentUsage = usage;
+    element.classList.add('selected');
+  }
+  
+  renderProducts();
+}
+
+// ดูรายละเอียด
+function viewDetails(id) {
+  // หาข้อมูลสินค้าจาก id
+  const item = rentals.find(r => r.id === id);
+  if (!item) {
+    alert('ไม่พบข้อมูลสินค้า');
+    return;
+  }
+  
+  // นำไปยังหน้ารายละเอียด (ต้องสร้างไฟล์ detail.html)
+  window.location.href = `detail.html?id=${id}`;
+}
+
+// แสดงรูปภาพขยาย
+function showImageModal(imageSrc) {
+  const modal = document.getElementById('imageModal');
+  const modalImage = document.getElementById('modalImage');
+  modalImage.src = imageSrc;
+  modal.classList.add('show');
+}
+
+// ปิด modal รูปภาพ
+function closeImageModal() {
+  const modal = document.getElementById('imageModal');
+  modal.classList.remove('show');
+}
+
+// Event Listeners
+window.addEventListener('DOMContentLoaded', function() {
+  console.log('Page loaded, loading rentals...');
+  loadRentals();
+});
+
+// โหลดข้อมูลใหม่เมื่อกลับมาที่หน้านี้
+window.addEventListener('focus', function() {
+  console.log('Page focused, reloading rentals...');
+  loadRentals();
+});
+
+// โหลดข้อมูลใหม่เมื่อ localStorage มีการเปลี่ยนแปลง
+window.addEventListener('storage', function(e) {
+  if (e.key === 'rentals') {
+    console.log('Storage changed, reloading rentals...');
+    loadRentals();
+  }
+});
+
+// รีเฟรชข้อมูลทุก 30 วินาที (เพื่อให้แน่ใจว่าข้อมูลใหม่ล่าสุด)
+setInterval(function() {
+  console.log('Auto refresh...');
+  loadRentals();
+}, 30000);
+</script>
+</body>
+</html>

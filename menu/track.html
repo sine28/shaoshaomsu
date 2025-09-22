@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ติดตามสถานะการเช่า</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f9fafb;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 420px;
+      margin: auto;
+    }
+
+    .header {
+      background-color: white;
+      padding: 12px 16px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .product-card,
+    .progress-card,
+    .info-card {
+      background-color: white;
+      margin: 16px;
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .status {
+      background-color: #dcfce7;
+      color: #15803d;
+      font-size: 12px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      display: inline-block;
+      margin-top: 8px;
+    }
+
+    .steps {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-size: 12px;
+    }
+
+    .circle {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      margin-bottom: 4px;
+    }
+
+    .circle.green {
+      background-color: #22c55e;
+    }
+
+    .circle.gray {
+      background-color: #e5e7eb;
+      color: #9ca3af;
+    }
+
+    .line {
+      flex: 1;
+      height: 2px;
+    }
+
+    .line.green {
+      background-color: #22c55e;
+    }
+
+    .line.gray {
+      background-color: #e5e7eb;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 30px;
+    }
+
+    .btn {
+      background: #7f5a36;
+      color: #faf8f4;
+      padding: 15px 30px;
+      border: none;
+      border-radius: 30px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.3s;
+      box-shadow: 0 4px 15px rgba(127, 90, 54, 0.3);
+      width: 10%;
+      margin: 15px 0;
+    }
+
+    .back-btn {
+      color: #faf8f4;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .back-btn:hover {
+      color: #fff3e0;
+    }
+
+    /* Styles สำหรับรายการเลือก */
+    .rental-selector {
+      background-color: white;
+      margin: 16px;
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Styles สำหรับช่องค้นหา */
+    .search-card {
+      background-color: white;
+      margin: 16px;
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .search-input-group {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    .search-input {
+      flex: 1;
+      padding: 12px 16px;
+      border: 2px solid #e5e7eb;
+      border-radius: 8px;
+      font-size: 16px;
+      transition: border-color 0.3s;
+    }
+
+    .search-input:focus {
+      outline: none;
+      border-color: #7f5a36;
+      box-shadow: 0 0 0 3px rgba(127, 90, 54, 0.1);
+    }
+
+    .search-btn {
+      background: #7f5a36;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 12px 20px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background 0.3s;
+      white-space: nowrap;
+    }
+
+    .search-btn:hover {
+      background: #6b4423;
+    }
+
+    .search-btn:disabled {
+      background: #9ca3af;
+      cursor: not-allowed;
+    }
+
+    .search-example {
+      font-size: 12px;
+      color: #6b7280;
+      margin-top: 5px;
+    }
+
+    .rental-item {
+      padding: 12px;
+      border: 2px solid #e5e7eb;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .rental-item:hover {
+      border-color: #7f5a36;
+      background-color: #faf8f4;
+    }
+
+    .rental-item.selected {
+      border-color: #7f5a36;
+      background-color: #fff3e0;
+    }
+
+    .rental-item h4 {
+      margin: 0 0 4px 0;
+      color: #7f5a36;
+    }
+
+    .rental-item p {
+      margin: 0;
+      font-size: 14px;
+      color: #666;
+    }
+
+    .no-rentals {
+      text-align: center;
+      color: #666;
+      font-style: italic;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h3>ติดตามสถานะการเช่า</h3>
+    </div>
+
+    <!-- ช่องค้นหารหัสคำขอ -->
+    <div class="search-card" id="searchCard">
+      <h4>🔍 ค้นหาด้วยรหัสคำขอ</h4>
+      <div class="search-input-group">
+        <input 
+          type="text" 
+          id="searchInput" 
+          class="search-input" 
+          placeholder="กรอกรหัสคำขอ เช่น REQ-1727000000000"
+          maxlength="20"
+        >
+        <button id="searchBtn" class="search-btn" onclick="searchById()">ค้นหา</button>
+      </div>
+      <div class="search-example">ตัวอย่าง: REQ-1727000000000</div>
+    </div>
+
+    <!-- รายการเลือกการเช่า (แสดงเมื่อไม่มี ID ใน URL) -->
+    <div class="rental-selector" id="rentalSelector">
+      <h4>หรือเลือกจากรายการการเช่าของคุณ:</h4>
+      <div id="rentalList"></div>
+    </div>
+
+    <!-- แสดงรายละเอียด (แสดงเมื่อมี ID แล้ว) -->
+    <div id="rentalDetails" class="hidden">
+      <div class="product-card">
+        <h2 id="productName"></h2>
+        <p id="productPrice"></p>
+        <p id="productDates"></p>
+        <p id="productNote"></p>
+        <span class="status" id="productStatus"></span>
+      </div>
+
+      <div class="progress-card">
+        <div class="steps">
+          <div class="step">
+            <div class="circle gray"></div>
+            <span>รอยืนยัน</span>
+          </div>
+          <div class="line gray"></div>
+          <div class="step">
+            <div class="circle gray"></div>
+            <span>นัดรับ-ส่ง</span>
+          </div>
+          <div class="line gray"></div>
+          <div class="step">
+            <div class="circle gray"></div>
+            <span>ใช้งาน</span>
+          </div>
+          <div class="line gray"></div>
+          <div class="step">
+            <div class="circle gray"></div>
+            <span>คืนเรียบร้อย</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <p>📅 ระยะเวลา: <span id="rentalDays"></span></p>
+        <p>💰 ราคารวม: <span id="totalPrice"></span></p>
+        <p>⏳ เวลาที่เหลือ: <span id="timeLeft"></span></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="btn-group">
+    <button class="btn">
+      <a href="../index.html" class="back-btn">หน้าหลัก</a>
+    </button>
+    <button class="btn">
+      <a href="p1.html" class="back-btn">รายการอุปกรณ์</a>
+    </button>
+  </div>
+
+  <script>
+    function getQueryParam(name) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(name);
+    }
+
+    // แปลง statusStep (ตัวเลข) เป็นข้อความ
+    function getStatusText(statusStep) {
+      switch (Number(statusStep)) {
+        case 1: return "รอผู้ปล่อยเช่ายืนยัน";
+        case 2: return "นัดรับ-ส่งอุปกรณ์";
+        case 3: return "กำลังใช้งาน";
+        case 4: return "คืนอุปกรณ์เรียบร้อย";
+        default: return statusStep;
+      }
+    }
+
+    // แปลงข้อความเป็น step number
+    function getStatusStep(status) {
+      if (typeof status === 'number') return status;
+      switch (status) {
+        case "รอผู้ปล่อยเช่ายืนยัน": return 1;
+        case "นัดรับ-ส่งอุปกรณ์": return 2;
+        case "กำลังใช้งาน": return 3;
+        case "คืนอุปกรณ์เรียบร้อย": return 4;
+        default: return 1;
+      }
+    }
+
+    function updateProgressUI(statusStep) {
+      const circles = document.querySelectorAll('.circle');
+      const lines = document.querySelectorAll('.line');
+      const step = getStatusStep(statusStep);
+
+      circles.forEach((circle, index) => {
+        const isActive = (index + 1) <= step;
+        circle.classList.toggle('green', isActive);
+        circle.classList.toggle('gray', !isActive);
+        circle.textContent = isActive ? '✔' : '○';
+      });
+
+      lines.forEach((line, index) => {
+        const isActive = (index + 1) < step;
+        line.classList.toggle('green', isActive);
+        line.classList.toggle('gray', !isActive);
+      });
+    }
+
+    function startCountdown(endDate) {
+      const timeLeftEl = document.getElementById('timeLeft');
+
+      function updateCountdown() {
+        const now = new Date();
+        const end = new Date(endDate + "T23:59:59");
+        const diff = end - now;
+
+        if (diff <= 0) {
+          timeLeftEl.textContent = "หมดเวลาการเช่า";
+          timeLeftEl.style.color = "red";
+          clearInterval(timer);
+          return;
+        }
+
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+        const minutes = Math.floor((diff / (1000 * 60)) % 60);
+
+        timeLeftEl.textContent = `${days} วัน ${hours} ชม. ${minutes} นาที`;
+      }
+
+      updateCountdown();
+      const timer = setInterval(updateCountdown, 60000);
+    }
+
+    function displayRentalDetails(item) {
+      const currentStatus = item.statusStep || item.status || 1;
+      const statusText = getStatusText(currentStatus);
+
+      document.getElementById('productName').textContent = item.deviceName || 'ไม่ระบุชื่อ';
+      document.getElementById('productPrice').textContent = `${item.pricePerDay || 0} บาท/วัน`;
+      document.getElementById('productDates').textContent = `${item.startDate || '-'} - ${item.endDate || '-'}`;
+      document.getElementById('productNote').textContent = item.description || item.note || '';
+      document.getElementById('productStatus').textContent = statusText;
+      document.getElementById('rentalDays').textContent = `${item.rentalDays || 0} วัน`;
+      document.getElementById('totalPrice').textContent = `${(item.pricePerDay || 0) * (item.rentalDays || 0)} บาท`;
+
+      updateProgressUI(currentStatus);
+
+      if (item.endDate) {
+        startCountdown(item.endDate);
+      }
+
+      // แสดงรายละเอียด ซ่อนส่วนค้นหาและรายการเลือก
+      document.getElementById('searchCard').classList.add('hidden');
+      document.getElementById('rentalSelector').classList.add('hidden');
+      document.getElementById('rentalDetails').classList.remove('hidden');
+    }
+
+    function searchById() {
+      const searchInput = document.getElementById('searchInput');
+      const searchId = searchInput.value.trim();
+      
+      if (!searchId) {
+        alert('กรุณากรอกรหัสคำขอ');
+        searchInput.focus();
+        return;
+      }
+
+      const requests = JSON.parse(localStorage.getItem('rentalRequests') || '[]');
+      const item = requests.find(r => String(r.id) === String(searchId));
+      
+      if (item) {
+        // อัพเดท URL โดยเพิ่ม ID
+        const newUrl = `${window.location.pathname}?id=${searchId}`;
+        window.history.pushState({}, '', newUrl);
+        
+        displayRentalDetails(item);
+      } else {
+        alert(`ไม่พบรหัสคำขอ: ${searchId}\nโปรดตรวจสอบรหัสให้ถูกต้อง`);
+        searchInput.focus();
+        searchInput.select();
+      }
+    }
+
+    function showSearchAndList() {
+      // แสดงส่วนค้นหาและรายการ ซ่อนรายละเอียด
+      document.getElementById('searchCard').classList.remove('hidden');
+      document.getElementById('rentalSelector').classList.remove('hidden');
+      document.getElementById('rentalDetails').classList.add('hidden');
+      
+      // รีเซ็ตช่องค้นหา
+      document.getElementById('searchInput').value = '';
+    }
+
+    function displayRentalList(requests) {
+      const listContainer = document.getElementById('rentalList');
+      
+      if (requests.length === 0) {
+        listContainer.innerHTML = '<div class="no-rentals">ยังไม่มีรายการเช่า</div>';
+        return;
+      }
+
+      listContainer.innerHTML = '';
+
+      requests.forEach((item, index) => {
+        const statusText = getStatusText(item.statusStep || item.status || 1);
+        
+        const rentalItem = document.createElement('div');
+        rentalItem.className = 'rental-item';
+        rentalItem.innerHTML = `
+          <h4>${item.deviceName || 'ไม่ระบุชื่อ'}</h4>
+          <p>📅 ${item.startDate || '-'} - ${item.endDate || '-'}</p>
+          <p>💰 ${(item.pricePerDay || 0) * (item.rentalDays || 0)} บาท (${item.rentalDays || 0} วัน)</p>
+          <p>🏷️ ${statusText}</p>
+        `;
+
+        rentalItem.addEventListener('click', () => {
+          // อัพเดท URL โดยเพิ่ม ID
+          const newUrl = `${window.location.pathname}?id=${item.id}`;
+          window.history.pushState({}, '', newUrl);
+          
+          displayRentalDetails(item);
+        });
+
+        listContainer.appendChild(rentalItem);
+      });
+    }
+
+    // Main Logic
+    const id = getQueryParam('id');
+    const requests = JSON.parse(localStorage.getItem('rentalRequests') || '[]');
+
+    if (id) {
+      // มี ID ใน URL - แสดงรายละเอียดเฉพาะรายการนั้น
+      const item = requests.find(r => String(r.id) === String(id));
+      
+      if (item) {
+        displayRentalDetails(item);
+      } else {
+        alert("ไม่พบข้อมูลการเช่า ID: " + id);
+        // ย้อนกลับไปแสดงรายการทั้งหมด
+        window.history.pushState({}, '', window.location.pathname);
+        showSearchAndList();
+        displayRentalList(requests);
+      }
+    } else {
+      // ไม่มี ID ใน URL - แสดงช่องค้นหาและรายการให้เลือก
+      showSearchAndList();
+      displayRentalList(requests);
+    }
+
+    // เพิ่ม Enter key support สำหรับช่องค้นหา
+    document.getElementById('searchInput').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        searchById();
+      }
+    });
+
+    // เพิ่ม back button functionality เมื่อดูรายละเอียด
+    window.addEventListener('popstate', function(event) {
+      const currentId = getQueryParam('id');
+      if (!currentId) {
+        // กลับมาที่หน้าค้นหา
+        showSearchAndList();
+        displayRentalList(requests);
+      }
+    });
+
+    console.log('localStorage rentalRequests:', requests);
+  </script>
+</body>
+</html>

@@ -1,0 +1,1198 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ข้อมูลผู้ใช้งาน - Account</title>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f7f6f4;
+    min-height: 100vh;
+    padding: 20px;
+    color: #8b4513;
+  }
+
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(139, 69, 19, 0.08);
+    overflow: hidden;
+  }
+
+  .header {
+    background: linear-gradient(135deg, #f4e6d3 0%, #e8d5c4 100%);
+    padding: 40px 30px;
+    text-align: center;
+    position: relative;
+  }
+
+  .header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="%23d2b48c" opacity="0.3"/><circle cx="80" cy="30" r="1.5" fill="%23deb887" opacity="0.4"/><circle cx="60" cy="70" r="2.5" fill="%23d2b48c" opacity="0.2"/></svg>');
+    opacity: 0.5;
+  }
+
+  .header h1 {
+    color: #8b4513;
+    font-size: 2.2rem;
+    font-weight: 300;
+    margin-bottom: 8px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .header p {
+    color: #a0522d;
+    font-size: 1rem;
+    opacity: 0.8;
+    position: relative;
+    z-index: 2;
+    font-weight: 300;
+  }
+
+  .profile-section {
+    padding: 40px 30px;
+    text-align: center;
+  }
+
+  .profile-image-container {
+    position: relative;
+    display: inline-block;
+    margin-bottom: 30px;
+  }
+
+  .profile-image {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid #f4e6d3;
+    box-shadow: 0 8px 25px rgba(139, 69, 19, 0.15);
+    transition: transform 0.3s ease;
+  }
+
+  .profile-image:hover {
+    transform: scale(1.05);
+  }
+
+  .edit-profile-btn {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    background: #d2b48c;
+    color: #8b4513;
+    border: none;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(139, 69, 19, 0.2);
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .edit-profile-btn:hover {
+    background: #cdaa7d;
+    transform: scale(1.1);
+  }
+
+  .user-info {
+    background: #faf9f7;
+    border-radius: 12px;
+    padding: 30px;
+    margin: 20px 0;
+    border: 1px solid #f0ede8;
+  }
+
+  .user-info h2 {
+    color: #8b4513;
+    font-weight: 300;
+    font-size: 1.4rem;
+    margin-bottom: 25px;
+    text-align: center;
+  }
+
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+  }
+
+  .info-card {
+    background: #ffffff;
+    border-radius: 8px;
+    padding: 20px;
+    border: 1px solid #f0ede8;
+    transition: all 0.3s ease;
+  }
+
+  .info-card:hover {
+    box-shadow: 0 4px 15px rgba(139, 69, 19, 0.1);
+    transform: translateY(-2px);
+  }
+
+  .info-label {
+    color: #a0522d;
+    font-size: 0.85rem;
+    font-weight: 500;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    opacity: 0.8;
+  }
+
+  .info-value {
+    color: #8b4513;
+    font-size: 1.1rem;
+    font-weight: 400;
+    word-break: break-all;
+  }
+
+  .icon {
+    font-size: 1rem;
+    color: #d2b48c;
+  }
+
+  .stats-section {
+    background: #f8f6f3;
+    padding: 30px;
+    margin: 20px 0;
+    border-top: 1px solid #f0ede8;
+    border-bottom: 1px solid #f0ede8;
+  }
+
+  .stats-section h3 {
+    color: #8b4513;
+    font-weight: 300;
+    font-size: 1.3rem;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 20px;
+  }
+
+  .stat-card {
+    text-align: center;
+    background: #ffffff;
+    border-radius: 8px;
+    padding: 20px 15px;
+    border: 1px solid #f0ede8;
+    transition: transform 0.3s ease;
+  }
+
+  .stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 15px rgba(139, 69, 19, 0.1);
+  }
+
+  .stat-number {
+    font-size: 1.8rem;
+    font-weight: 300;
+    color: #8b4513;
+    margin-bottom: 5px;
+  }
+
+  .stat-label {
+    font-size: 0.85rem;
+    color: #a0522d;
+    opacity: 0.8;
+  }
+
+  .actions-section {
+    padding: 30px;
+    background: #ffffff;
+  }
+
+  .btn-group {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 15px;
+  }
+
+  .btn {
+    padding: 12px 20px;
+    border: 1px solid #e8dcc6;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 400;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: #ffffff;
+    color: #8b4513;
+  }
+
+  .btn:hover {
+    background: #f8f6f3;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(139, 69, 19, 0.15);
+    border-color: #d2b48c;
+  }
+
+  .btn-primary {
+    background: #d2b48c;
+    color: #ffffff;
+    border-color: #d2b48c;
+  }
+
+  .btn-primary:hover {
+    background: #cdaa7d;
+    border-color: #cdaa7d;
+  }
+
+  .btn-danger {
+    color: #cd853f;
+    border-color: #f4e6d3;
+  }
+
+  .btn-danger:hover {
+    background: #fef9f5;
+    border-color: #cd853f;
+  }
+
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(139, 69, 19, 0.1);
+    backdrop-filter: blur(4px);
+  }
+
+  .modal-content {
+    background-color: #ffffff;
+    margin: 5% auto;
+    padding: 30px;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 20px 40px rgba(139, 69, 19, 0.15);
+    animation: modalSlideIn 0.3s ease;
+    border: 1px solid #f0ede8;
+  }
+
+  @keyframes modalSlideIn {
+    from { transform: translateY(-30px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+
+  .close {
+    color: #a0522d;
+    float: right;
+    font-size: 24px;
+    font-weight: 300;
+    cursor: pointer;
+    transition: color 0.3s;
+    opacity: 0.7;
+  }
+
+  .close:hover {
+    color: #8b4513;
+    opacity: 1;
+  }
+
+  .modal h2 {
+    color: #8b4513;
+    font-weight: 300;
+    font-size: 1.4rem;
+    margin-bottom: 25px;
+  }
+
+  .form-group {
+    margin-bottom: 20px;
+  }
+
+  .form-group label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 400;
+    color: #8b4513;
+    font-size: 0.9rem;
+  }
+
+  .form-group input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #e8dcc6;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    transition: border-color 0.3s;
+    background: #fafafa;
+  }
+
+  .form-group input:focus {
+    outline: none;
+    border-color: #d2b48c;
+    background: #ffffff;
+  }
+
+  .image-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-top: 15px;
+  }
+
+  .image-option {
+    width: 100%;
+    border-radius: 6px;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: border 0.3s;
+  }
+
+  .image-option.selected {
+    border-color: #d2b48c;
+  }
+
+  .success-message {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    background: #d2b48c;
+    color: #ffffff;
+    padding: 12px 20px;
+    border-radius: 6px;
+    box-shadow: 0 4px 15px rgba(210, 180, 140, 0.3);
+    animation: slideInRight 0.3s ease;
+    font-size: 0.9rem;
+  }
+
+  @keyframes slideInRight {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+  }
+
+  .not-logged-in {
+    text-align: center;
+    padding: 60px 30px;
+  }
+
+  .not-logged-in h2 {
+    color: #8b4513;
+    margin-bottom: 20px;
+    font-size: 1.8rem;
+    font-weight: 300;
+  }
+
+  .not-logged-in p {
+    color: #a0522d;
+    margin-bottom: 30px;
+    font-size: 1.1rem;
+  }
+
+  .login-btn {
+    background: linear-gradient(135deg, #8B4513, #A0522D);
+    color: white;
+    padding: 15px 30px;
+    border: none;
+    border-radius: 25px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 4px 15px rgba(139, 69, 19, 0.3);
+  }
+
+  .login-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(139, 69, 19, 0.4);
+  }
+
+  @media (max-width: 768px) {
+    .container {
+      margin: 10px;
+      border-radius: 12px;
+    }
+    
+    .header h1 {
+      font-size: 1.8rem;
+    }
+    
+    .profile-section, .actions-section {
+      padding: 25px 20px;
+    }
+    
+    .info-grid {
+      grid-template-columns: 1fr;
+      gap: 15px;
+    }
+    
+    .btn-group {
+      grid-template-columns: 1fr;
+    }
+
+    .stats-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+</style>
+</head>
+<body>
+  <div class="container" id="mainContainer">
+    <!-- แสดงเมื่อยังไม่ได้เข้าสู่ระบบ -->
+    <div class="not-logged-in" id="notLoggedIn" style="display: none;">
+      <h2>กรุณาเข้าสู่ระบบ</h2>
+      <p>คุณต้องเข้าสู่ระบบก่อนเพื่อดูข้อมูลบัญชี</p>
+      <button class="login-btn" onclick="goToIndex()">เข้าสู่ระบบ</button>
+    </div>
+
+    <!-- แสดงเมื่อเข้าสู่ระบบแล้ว -->
+    <div id="loggedInContent">
+      <!-- Header Section -->
+      <div class="header">
+        <h1>บัญชีผู้ใช้งาน</h1>
+        <p>จัดการข้อมูลส่วนตัวและการตั้งค่าบัญชี</p>
+      </div>
+
+      <!-- Profile Section -->
+      <div class="profile-section">
+        <div class="profile-image-container">
+          <img id="profileImage" class="profile-image" 
+               src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImdyYWQiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPjxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiNkMmI0OGMiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNmNGU2ZDMiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48Y2lyY2xlIGN4PSIxMDAiIGN5PSIxMDAiIHI9IjEwMCIgZmlsbD0idXJsKCNncmFkKSIvPjx0ZXh0IHg9IjEwMCIgeT0iMTEwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iNjAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IiM4YjQ1MTMiPvCfkak8L3RleHQ+PC9zdmc+" 
+               alt="รูปโปรไฟล์">
+          <button class="edit-profile-btn" onclick="openImageModal()" title="เปลี่ยนรูปโปรไฟล์">
+            📷
+          </button>
+        </div>
+
+        <div class="user-info">
+          <h2>ข้อมูลส่วนตัว</h2>
+          <div class="info-grid">
+            <div class="info-card">
+              <div class="info-label">
+                <span class="icon">👤</span>
+                ชื่อผู้ใช้งาน
+              </div>
+              <div class="info-value" id="displayName">-</div>
+            </div>
+            
+            <div class="info-card">
+              <div class="info-label">
+                <span class="icon">📱</span>
+                เบอร์โทรศัพท์
+              </div>
+              <div class="info-value" id="displayPhone">-</div>
+            </div>
+            
+            <div class="info-card">
+              <div class="info-label">
+                <span class="icon">📧</span>
+                อีเมล
+              </div>
+              <div class="info-value" id="displayEmail">-</div>
+            </div>
+            
+            <div class="info-card">
+              <div class="info-label">
+                <span class="icon">📅</span>
+                วันที่สมัครสมาชิก
+              </div>
+              <div class="info-value" id="displayJoinDate">-</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Statistics Section -->
+      <div class="stats-section">
+        <h3>สถิติการใช้งาน</h3>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-number" id="rentalsCount">0</div>
+            <div class="stat-label">ครั้งที่เช่า</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number" id="reviewsCount">0</div>
+            <div class="stat-label">รีวิวที่เขียน</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number" id="itemsShared">0</div>
+            <div class="stat-label">อุปกรณ์ที่ปล่อยเช่า</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number">5.0</div>
+            <div class="stat-label">คะแนนเฉลี่ย</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Actions Section -->
+      <div class="actions-section">
+        <div class="btn-group">
+          <button class="btn" onclick="openEditModal()">
+            ✏️ แก้ไขข้อมูล
+          </button>
+          <button class="btn" onclick="changePassword()">
+            🔐 เปลี่ยนรหัสผ่าน
+          </button>
+          <button class="btn" onclick="viewHistory()">
+            📋 ประวัติการเช่า
+          </button>
+          <br><center><a href="../index.html"><button class="btn btn-primary" onclick="goHome()">
+            🏠 กลับหน้าหลัก
+          </button></a></center>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Profile Modal -->
+  <div id="editModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeEditModal()">&times;</span>
+      <h2>แก้ไขข้อมูลส่วนตัว</h2>
+      
+      <div class="form-group">
+        <label for="editName">ชื่อผู้ใช้งาน:</label>
+        <input type="text" id="editName" placeholder="กรุณากรอกชื่อ-นามสกุล">
+      </div>
+      
+      <div class="form-group">
+        <label for="editPhone">เบอร์โทรศัพท์:</label>
+        <input type="tel" id="editPhone" placeholder="กรุณากรอกเบอร์โทรศัพท์">
+      </div>
+      
+      <div class="form-group">
+        <label for="editEmail">อีเมล:</label>
+        <input type="email" id="editEmail" placeholder="กรุณากรอกอีเมล">
+      </div>
+      
+      <div class="btn-group" style="margin-top: 25px;">
+        <button class="btn btn-primary" onclick="saveProfile()">
+          💾 บันทึกข้อมูล
+        </button>
+        <button class="btn" onclick="closeEditModal()">
+          ❌ ยกเลิก
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Change Image Modal -->
+  <div id="imageModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeImageModal()">&times;</span>
+      <h2>เปลี่ยนรูปโปรไฟล์</h2>
+      
+      <div class="form-group">
+        <label>วิธีการอัปโหลดรูปภาพ:</label>
+        
+        <!-- อัปโหลดไฟล์จากเครื่อง -->
+        <div style="margin: 15px 0; padding: 20px; border: 2px dashed #e8dcc6; border-radius: 8px; text-align: center;">
+          <p style="color: #a0522d; margin-bottom: 10px;">📁 เลือกไฟล์จากเครื่องของคุณ</p>
+          <input type="file" id="imageUpload" accept="image/*" style="display: none;" onchange="handleImageUpload(event)">
+          <button class="btn" onclick="document.getElementById('imageUpload').click()" style="margin: 5px;">
+            📤 เลือกไฟล์
+          </button>
+        </div>
+
+        <!-- หรือใส่ URL -->
+        <div style="margin: 15px 0;">
+          <label for="imageUrl" style="font-size: 0.9rem; margin-bottom: 8px;">🔗 หรือใส่ลิงค์รูปภาพ:</label>
+          <div style="display: flex; gap: 10px;">
+            <input type="text" id="imageUrl" placeholder="https://example.com/image.jpg" style="flex: 1;">
+            <button class="btn" onclick="previewImageFromUrl()" style="margin: 0; width: auto; padding: 10px 15px;">
+              👁️ ดูตัวอย่าง
+            </button>
+          </div>
+        </div>
+
+        <!-- พื้นที่แสดงตัวอย่างรูป -->
+        <div id="imagePreview" style="margin: 20px 0; text-align: center; display: none;">
+          <p style="color: #8b4513; margin-bottom: 10px;">ตัวอย่างรูปภาพ:</p>
+          <img id="previewImg" style="max-width: 200px; max-height: 200px; border-radius: 8px; border: 2px solid #e8dcc6;">
+        </div>
+
+        <!-- อวตาร์การ์ตูนน่ารัก -->
+        <div style="margin: 20px 0;">
+          <label>🎨 หรือเลือกอวตาร์การ์ตูน:</label>
+          <div class="image-grid" style="margin-top: 10px;">
+            <div style="background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%); border-radius: 50%; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; font-size: 2rem; cursor: pointer; border: 2px solid transparent; transition: border 0.3s;" 
+                 class="avatar-option" onclick="selectAvatar(this, '🐱')">🐱</div>
+            <div style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); border-radius: 50%; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; font-size: 2rem; cursor: pointer; border: 2px solid transparent; transition: border 0.3s;" 
+                 class="avatar-option" onclick="selectAvatar(this, '🐶')">🐶</div>
+            <div style="background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); border-radius: 50%; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; font-size: 2rem; cursor: pointer; border: 2px solid transparent; transition: border 0.3s;" 
+                 class="avatar-option" onclick="selectAvatar(this, '🐰')">🐰</div>
+            <div style="background: linear-gradient(135deg, #d299c2 0%, #fef9d7 100%); border-radius: 50%; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; font-size: 2rem; cursor: pointer; border: 2px solid transparent; transition: border 0.3s;" 
+                 class="avatar-option" onclick="selectAvatar(this, '🐼')">🐼</div>
+            <div style="background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%); border-radius: 50%; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; font-size: 2rem; cursor: pointer; border: 2px solid transparent; transition: border 0.3s;" 
+                 class="avatar-option" onclick="selectAvatar(this, '🐸')">🐸</div>
+            <div style="background: linear-gradient(135deg, #ffa085 0%, #ffb3ba 100%); border-radius: 50%; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; font-size: 2rem; cursor: pointer; border: 2px solid transparent; transition: border 0.3s;" 
+                 class="avatar-option" onclick="selectAvatar(this, '🦊')">🦊</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="btn-group" style="margin-top: 25px;">
+        <button class="btn btn-primary" onclick="saveImage()">
+          💾 บันทึก
+        </button>
+        <button class="btn" onclick="closeImageModal()">
+          ❌ ยกเลิก
+        </button>
+      </div>
+    </div>
+  </div>
+
+<script>
+    let currentUser = null;
+    let selectedImage = null;
+    let userData = null;
+
+    // ตรวจสอบการเข้าสู่ระบบและโหลดข้อมูลผู้ใช้
+    function loadUserData() {
+      console.log('🔍 กำลังตรวจสอบข้อมูลผู้ใช้...');
+      
+      // ตรวจสอบข้อมูลจาก localStorage (ตามโค้ดหน้าหลัก)
+      const currentUserStr = localStorage.getItem('currentUser');
+      console.log('📊 ข้อมูล currentUser:', currentUserStr);
+
+      // หากไม่มีข้อมูลผู้ใช้ปัจจุบัน
+      if (!currentUserStr) {
+        console.log('❌ ไม่พบข้อมูลผู้ใช้ แสดงหน้าเข้าสู่ระบบ');
+        showNotLoggedIn();
+        return;
+      }
+
+      try {
+        currentUser = JSON.parse(currentUserStr);
+        console.log('✅ ข้อมูลผู้ใช้ที่พบ:', currentUser);
+        
+        // ตรวจสอบว่ามีข้อมูลครบถ้วนหรือไม่
+        if (!currentUser || (!currentUser.username && !currentUser.Email)) {
+          console.log('❌ ข้อมูลผู้ใช้ไม่ครบถ้วน');
+          showNotLoggedIn();
+          return;
+        }
+
+        // แสดงหน้าข้อมูลผู้ใช้
+        document.getElementById('notLoggedIn').style.display = 'none';
+        document.getElementById('loggedInContent').style.display = 'block';
+        
+        // ดึงข้อมูลผู้ใช้จาก userData หรือสร้างใหม่จาก currentUser
+        const existingUserData = localStorage.getItem('userData');
+        
+        if (existingUserData) {
+          try {
+            userData = JSON.parse(existingUserData);
+            console.log('✅ ใช้ข้อมูลที่มีอยู่:', userData);
+          } catch (e) {
+            console.log('❌ ข้อมูล userData เสียหาย สร้างใหม่');
+            userData = null;
+          }
+        }
+        
+        if (!userData) {
+          // สร้างข้อมูลใหม่จากข้อมูลการสมัครสมาชิก (ตามโครงสร้างจากหน้าหลัก)
+          console.log('🆕 สร้างข้อมูลใหม่จาก currentUser:', currentUser);
+          
+          userData = {
+            name: currentUser.username || 'ไม่ระบุ',
+            phone: currentUser.phone || 'ไม่ระบุ', 
+            email: currentUser.Email || 'ไม่ระบุ', // ใช้ Email ตามโค้ดหน้าหลัก
+            joinDate: new Date().toLocaleDateString('th-TH'),
+            profileImage: currentUser.profileImage || generateDefaultAvatar(currentUser.username || 'User')
+          };
+          
+          console.log('✅ ข้อมูลใหม่ที่สร้าง:', userData);
+          
+          // บันทึกข้อมูลใหม่
+          localStorage.setItem('userData', JSON.stringify(userData));
+        }
+        
+        // ตั้งค่าสถานะเข้าสู่ระบบ
+        localStorage.setItem('isLoggedIn', 'true');
+        
+        // อัพเดทการแสดงข้อมูลและสถิติ
+        updateDisplay();
+        updateStats();
+        
+        console.log('✅ โหลดข้อมูลสำเร็จ!');
+        
+      } catch (error) {
+        console.error('❌ เกิดข้อผิดพลาดในการโหลดข้อมูล:', error);
+        console.log('🔍 ลอง Debug ข้อมูลใน localStorage:');
+        console.log('- currentUser:', localStorage.getItem('currentUser'));
+        console.log('- users:', localStorage.getItem('users'));
+        console.log('- userData:', localStorage.getItem('userData'));
+        
+        showNotLoggedIn();
+        return;
+      }
+    }
+
+    // แสดงหน้าเมื่อยังไม่ได้เข้าสู่ระบบ
+    function showNotLoggedIn() {
+      console.log('❌ แสดงหน้าเข้าสู่ระบบ');
+      console.log('🔍 Debug localStorage:');
+      
+      // แสดงข้อมูล localStorage ทั้งหมด
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        const value = localStorage.getItem(key);
+        console.log(`- ${key}:`, value);
+      }
+      
+      document.getElementById('notLoggedIn').style.display = 'block';
+      document.getElementById('loggedInContent').style.display = 'none';
+    }
+
+    // สร้างอวตาร์เริ่มต้น
+    function generateDefaultAvatar(name) {
+      const firstLetter = name.charAt(0).toUpperCase();
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      canvas.width = 200;
+      canvas.height = 200;
+
+      // วาดพื้นหลัง gradient
+      const gradient = ctx.createLinearGradient(0, 0, 200, 200);
+      gradient.addColorStop(0, '#d2b48c');
+      gradient.addColorStop(1, '#f4e6d3');
+
+      ctx.fillStyle = gradient;
+      ctx.beginPath();
+      ctx.arc(100, 100, 100, 0, Math.PI * 2);
+      ctx.fill();
+
+      // วาดตัวอักษร
+      ctx.font = '80px Arial';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillStyle = '#8b4513';
+      ctx.fillText(firstLetter, 100, 100);
+
+      return canvas.toDataURL();
+    }
+
+    // อัพเดทการแสดงข้อมูล
+    function updateDisplay() {
+      console.log('🖼️ อัพเดทการแสดงข้อมูล:', userData);
+      
+      // ป้องกันข้อผิดพลาดถ้าไม่มี element
+      const elements = {
+        displayName: document.getElementById('displayName'),
+        displayPhone: document.getElementById('displayPhone'),
+        displayEmail: document.getElementById('displayEmail'),
+        displayJoinDate: document.getElementById('displayJoinDate'),
+        profileImage: document.getElementById('profileImage')
+      };
+      
+      // ตรวจสอบและอัพเดทข้อมูล
+      if (elements.displayName) {
+        elements.displayName.textContent = userData.name || 'ไม่ระบุ';
+      }
+      if (elements.displayPhone) {
+        elements.displayPhone.textContent = userData.phone || 'ไม่ระบุ';
+      }
+      if (elements.displayEmail) {
+        elements.displayEmail.textContent = userData.email || 'ไม่ระบุ';
+      }
+      if (elements.displayJoinDate) {
+        elements.displayJoinDate.textContent = userData.joinDate || 'ไม่ระบุ';
+      }
+      if (elements.profileImage) {
+        elements.profileImage.src = userData.profileImage || generateDefaultAvatar(userData.name || 'User');
+      }
+      
+      console.log('✅ อัพเดทการแสดงผลสำเร็จ');
+    }
+
+    // อัพเดทสถิติ
+    function updateStats() {
+      const rentalRequests = JSON.parse(localStorage.getItem('rentalRequests') || '[]');
+      const reviews = JSON.parse(localStorage.getItem('reviews') || '[]');
+      const rentals = JSON.parse(localStorage.getItem('rentals') || '[]');
+      
+      // กรองข้อมูลตามผู้ใช้ปัจจุบัน
+      const userRentals = rentalRequests.filter(rental => 
+        rental.renterName === userData.name || rental.renterEmail === userData.email
+      );
+      const userReviews = reviews.filter(review => 
+        review.reviewerName === userData.name || review.reviewerEmail === userData.email
+      );
+      const userItems = rentals.filter(rental => 
+        rental.ownerName === userData.name || rental.ownerEmail === userData.email
+      );
+      
+      document.getElementById('rentalsCount').textContent = userRentals.length;
+      document.getElementById('reviewsCount').textContent = userReviews.length;
+      document.getElementById('itemsShared').textContent = userItems.length;
+    }
+
+    // เปิด Modal แก้ไขข้อมูล
+    function openEditModal() {
+      document.getElementById('editName').value = userData.name;
+      document.getElementById('editPhone').value = userData.phone;
+      document.getElementById('editEmail').value = userData.email;
+      document.getElementById('editModal').style.display = 'block';
+    }
+
+    // ปิด Modal แก้ไขข้อมูล
+    function closeEditModal() {
+      document.getElementById('editModal').style.display = 'none';
+    }
+
+    // บันทึกข้อมูลโปรไฟล์
+    function saveProfile() {
+      const name = document.getElementById('editName').value.trim();
+      const phone = document.getElementById('editPhone').value.trim();
+      const email = document.getElementById('editEmail').value.trim();
+
+      if (!name || !phone || !email) {
+        alert('กรุณากรอกข้อมูลให้ครบถ้วน');
+        return;
+      }
+
+      // ตรวจสอบรูปแบบเบอร์โทรศัพท์
+      const phoneRegex = /^[0-9-+\s()]{8,15}$/;
+      if (!phoneRegex.test(phone)) {
+        alert('กรุณากรอกเบอร์โทรศัพท์ให้ถูกต้อง');
+        return;
+      }
+
+      // ตรวจสอบรูปแบบอีเมล
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        alert('กรุณากรอกอีเมลให้ถูกต้อง');
+        return;
+      }
+
+      // อัพเดทข้อมูล userData
+      userData.name = name;
+      userData.phone = phone;
+      userData.email = email;
+
+      // อัพเดทใน currentUser ด้วย (ให้ตรงกับโครงสร้างหน้าหลัก)
+      currentUser.username = name;
+      currentUser.phone = phone;
+      currentUser.Email = email; // ใช้ Email ตามโค้ดหน้าหลัก
+
+      // อัพเดทใน users array ด้วย
+      const users = JSON.parse(localStorage.getItem('users') || '[]');
+      const userIndex = users.findIndex(u => u.Email === currentUser.Email);
+      if (userIndex !== -1) {
+        users[userIndex] = { ...users[userIndex], username: name, phone: phone, Email: email };
+        localStorage.setItem('users', JSON.stringify(users));
+      }
+
+      // บันทึกข้อมูล
+      localStorage.setItem('userData', JSON.stringify(userData));
+      localStorage.setItem('currentUser', JSON.stringify(currentUser));
+      
+      updateDisplay();
+      closeEditModal();
+      showSuccessMessage('บันทึกข้อมูลเรียบร้อยแล้ว!');
+    }
+
+    // เปิด Modal เปลี่ยนรูป
+    function openImageModal() {
+      document.getElementById('imageModal').style.display = 'block';
+      // รีเซ็ตการเลือก
+      document.querySelectorAll('.avatar-option').forEach(avatar => {
+        avatar.style.border = '2px solid transparent';
+      });
+      document.getElementById('imageUrl').value = '';
+      document.getElementById('imagePreview').style.display = 'none';
+      selectedImage = null;
+    }
+
+    // ปิด Modal เปลี่ยนรูป
+    function closeImageModal() {
+      document.getElementById('imageModal').style.display = 'none';
+    }
+
+    // อัปโหลดรูปจากไฟล์
+    function handleImageUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      // ตรวจสอบว่าเป็นไฟล์รูปภาพ
+      if (!file.type.startsWith('image/')) {
+        alert('กรุณาเลือกไฟล์รูปภาพเท่านั้น');
+        return;
+      }
+
+      // ตรวจสอบขนาดไฟล์ (ไม่เกิน 5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        alert('ไฟล์รูปภาพต้องไม่เกิน 5MB');
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        selectedImage = e.target.result;
+        showImagePreview(selectedImage);
+      };
+      reader.readAsDataURL(file);
+    }
+
+    // ตัวอย่างรูปจาก URL
+    function previewImageFromUrl() {
+      const url = document.getElementById('imageUrl').value.trim();
+      if (!url) {
+        alert('กรุณาใส่ URL รูปภาพ');
+        return;
+      }
+
+      // ตรวจสอบว่า URL ถูกต้อง
+      try {
+        new URL(url);
+      } catch {
+        alert('URL ไม่ถูกต้อง');
+        return;
+      }
+
+      selectedImage = url;
+      showImagePreview(url);
+    }
+
+    // แสดงตัวอย่างรูป
+    function showImagePreview(imageSrc) {
+      const previewDiv = document.getElementById('imagePreview');
+      const previewImg = document.getElementById('previewImg');
+      
+      previewImg.src = imageSrc;
+      previewImg.onerror = function() {
+        alert('ไม่สามารถโหลดรูปภาพได้ กรุณาตรวจสอบ URL');
+        previewDiv.style.display = 'none';
+      };
+      previewDiv.style.display = 'block';
+
+      // รีเซ็ตการเลือกอวตาร์
+      document.querySelectorAll('.avatar-option').forEach(avatar => {
+        avatar.style.border = '2px solid transparent';
+      });
+    }
+
+    // เลือกอวตาร์การ์ตูน
+    function selectAvatar(element, emoji) {
+      // รีเซ็ตการเลือกอวตาร์อื่น
+      document.querySelectorAll('.avatar-option').forEach(avatar => {
+        avatar.style.border = '2px solid transparent';
+      });
+
+      // เลือกอวตาร์นี้
+      element.style.border = '2px solid #d2b48c';
+
+      // สร้าง canvas สำหรับแปลงอิโมจิเป็นรูปภาพ
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      canvas.width = 200;
+      canvas.height = 200;
+
+      // วาดพื้นหลัง gradient ตาม emoji
+      const gradient = ctx.createLinearGradient(0, 0, 200, 200);
+      
+      if (emoji === '🐱') {
+        gradient.addColorStop(0, '#ff9a9e');
+        gradient.addColorStop(1, '#fecfef');
+      } else if (emoji === '🐶') {
+        gradient.addColorStop(0, '#a8edea');
+        gradient.addColorStop(1, '#fed6e3');
+      } else if (emoji === '🐰') {
+        gradient.addColorStop(0, '#ffecd2');
+        gradient.addColorStop(1, '#fcb69f');
+      } else if (emoji === '🐼') {
+        gradient.addColorStop(0, '#d299c2');
+        gradient.addColorStop(1, '#fef9d7');
+      } else if (emoji === '🐸') {
+        gradient.addColorStop(0, '#89f7fe');
+        gradient.addColorStop(1, '#66a6ff');
+      } else if (emoji === '🦊') {
+        gradient.addColorStop(0, '#ffa085');
+        gradient.addColorStop(1, '#ffb3ba');
+      }
+
+      // วาดพื้นหลังวงกลม
+      ctx.fillStyle = gradient;
+      ctx.beginPath();
+      ctx.arc(100, 100, 100, 0, Math.PI * 2);
+      ctx.fill();
+
+      // วาดอิโมจิ
+      ctx.font = '80px Arial';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(emoji, 100, 100);
+
+      // แปลง canvas เป็น data URL
+      selectedImage = canvas.toDataURL();
+      showImagePreview(selectedImage);
+
+      // ซ่อน URL input
+      document.getElementById('imageUrl').value = '';
+    }
+
+    // บันทึกรูปโปรไฟล์
+    function saveImage() {
+      if (!selectedImage) {
+        alert('กรุณาเลือกรูปโปรไฟล์');
+        return;
+      }
+
+      userData.profileImage = selectedImage;
+      currentUser.profileImage = selectedImage;
+      
+      localStorage.setItem('userData', JSON.stringify(userData));
+      localStorage.setItem('currentUser', JSON.stringify(currentUser));
+      
+      updateDisplay();
+      closeImageModal();
+      showSuccessMessage('เปลี่ยนรูปโปรไฟล์เรียบร้อยแล้ว!');
+    }
+
+    // เปลี่ยนรหัสผ่าน
+    function changePassword() {
+      const currentPassword = prompt('กรุณากรอกรหัสผ่านปัจจุบัน:');
+      if (currentPassword === null) return;
+
+      const newPassword = prompt('กรุณากรอกรหัสผ่านใหม่ (อย่างน้อย 6 ตัวอักษร):');
+      if (newPassword === null) return;
+
+      if (newPassword.length < 6) {
+        alert('รหัสผ่านต้องมีความยาวอย่างน้อย 6 ตัวอักษร');
+        return;
+      }
+
+      const confirmPassword = prompt('กรุณายืนยันรหัสผ่านใหม่:');
+      if (confirmPassword === null) return;
+
+      if (newPassword !== confirmPassword) {
+        alert('รหัสผ่านไม่ตรงกัน กรุณาลองใหม่');
+        return;
+      }
+
+      // อัพเดทรหัสผ่านใน currentUser
+      currentUser.password = newPassword;
+      localStorage.setItem('currentUser', JSON.stringify(currentUser));
+      
+      showSuccessMessage('เปลี่ยนรหัสผ่านเรียบร้อยแล้ว!');
+    }
+
+    // ดูประวัติการเช่า
+    function viewHistory() {
+      // สร้างหน้าต่างแสดงประวัติ
+      const history = JSON.parse(localStorage.getItem('rentalRequests') || '[]');
+      const userHistory = history.filter(rental => 
+        rental.renterName === userData.name || rental.renterEmail === userData.email
+      );
+
+      if (userHistory.length === 0) {
+        alert('คุณยังไม่มีประวัติการเช่า');
+        return;
+      }
+
+      let historyText = 'ประวัติการเช่าของคุณ:\n\n';
+      userHistory.forEach((rental, index) => {
+        historyText += `${index + 1}. ${rental.itemName}\n`;
+        historyText += `   วันที่: ${rental.requestDate}\n`;
+        historyText += `   สถานะ: ${rental.status || 'รอการอนุมัติ'}\n\n`;
+      });
+
+      alert(historyText);
+    }
+
+    // กลับหน้าหลัก
+    function goHome() {
+      window.location.href = 'index.html';
+    }
+
+    // ไปหน้าเข้าสู่ระบบ
+    function goToLogin() {
+      window.location.href = 'login.html';
+    }
+
+    // ออกจากระบบ
+    function logout() {
+      if (confirm('คุณต้องการออกจากระบบใช่หรือไม่?')) {
+        localStorage.removeItem('currentUser');
+        localStorage.removeItem('isLoggedIn');
+        localStorage.removeItem('userData');
+        showSuccessMessage('ออกจากระบบเรียบร้อยแล้ว');
+        setTimeout(() => {
+          window.location.href = 'index.html';
+        }, 1500);
+      }
+    }
+
+    // แสดงข้อความสำเร็จ
+    function showSuccessMessage(message) {
+      const successDiv = document.createElement('div');
+      successDiv.className = 'success-message';
+      successDiv.innerHTML = `✓ ${message}`;
+      
+      document.body.appendChild(successDiv);
+      
+      setTimeout(() => {
+        successDiv.style.animation = 'slideInRight 0.3s ease reverse';
+        setTimeout(() => {
+          if (document.body.contains(successDiv)) {
+            document.body.removeChild(successDiv);
+          }
+        }, 300);
+      }, 3000);
+    }
+
+    // ปิด Modal เมื่อคลิกนอกกรอบ
+    window.onclick = function(event) {
+      const editModal = document.getElementById('editModal');
+      const imageModal = document.getElementById('imageModal');
+      
+      if (event.target === editModal) {
+        closeEditModal();
+      }
+      if (event.target === imageModal) {
+        closeImageModal();
+      }
+    }
+
+    // เริ่มต้นโปรแกรม
+    window.addEventListener('load', function() {
+      console.log('🚀 เริ่มต้นโปรแกรม - กำลังโหลดข้อมูล...');
+      loadUserData();
+    });
+
+    // เรียกใช้ loadUserData เมื่อโหลดหน้า (สำรองในกรณีที่ window.load ไม่ทำงาน)
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log('📄 DOM โหลดเสร็จ - เรียก loadUserData');
+      loadUserData();
+    });
+    
+    // เรียกทันทีเมื่อ script โหลด
+    console.log('🔄 Script โหลดแล้ว - เรียก loadUserData ทันที');
+    loadUserData();
+  </script>
+</body>
+</html>

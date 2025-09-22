@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ระบบผู้ดูแล</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f9fafb;
+        margin: 0;
+        padding: 0;
+    }
+    .container {
+        max-width: 420px;
+        margin: auto;
+        background-color: #f9fafb;
+    }
+    .header {
+        background-color: white;
+        padding: 12px 16px;
+        display: flex;
+        align-items: center;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .header span h3 {
+        font-size: 18px;
+        font-weight: 500;
+        color: #333;
+        margin: 0;
+    }
+    .product-card, .progress-card, .location-card, .info-card {
+        background-color: white;
+        margin: 16px;
+        border-radius: 16px;
+        padding: 16px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .product-card .details { flex: 1; }
+    .product-card .status {
+        background-color: #dcfce7;
+        color: #15803d;
+        font-size: 12px;
+        font-weight: 500;
+        padding: 4px 8px;
+        border-radius: 999px;
+        display: inline-block;
+    }
+    .steps {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .step {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        font-size: 12px;
+    }
+    .circle {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 4px;
+        color: white;
+    }
+    .circle.green { background-color: #22c55e; }
+    .circle.gray { background-color: #e5e7eb; color: #9ca3af; }
+    .line { flex: 1; height: 2px; }
+    .line.green { background-color: #22c55e; }
+    .line.gray { background-color: #e5e7eb; }
+    .note-box {
+        background-color: #fff7ed;
+        padding: 8px;
+        border-radius: 8px;
+        margin-top: 8px;
+    }
+    .btn {
+        width: 100%;
+        padding: 12px;
+        border-radius: 8px;
+        font-weight: 500;
+        font-size: 16px;
+        cursor: pointer;
+        border: none;
+    }
+    .btn-yellow { background-color: #fef3c7; color: #b45309; }
+    .btn-green { background-color: #22c55e; color: white; }
+    .btn-blue { background-color: #3b82f6; color: white; }
+    .btn-cancel { background-color: #d97706; color: white; }
+    .btn-outline { background-color: white; border: 2px solid #d1d5db; color: #374151; }
+    .btn-logout { background-color: #ef4444; color: white; }
+    .info-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 8px 0;
+        font-size: 14px;
+    }
+    .info-row span:first-child { color: #4b5563; display: flex; align-items: center; }
+
+    /* กล่องล็อกอินผู้ดูแล */
+    #adminLoginBox {
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(0,0,0,0.5); display: flex; justify-content: center; align-items: center;
+        z-index: 9999;
+    }
+    #adminLoginBox .login-card {
+        background: white; padding: 20px; border-radius: 12px;
+        width: 300px; text-align: center; box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Header -->
+    <div class="header">
+        <span><h3>ระบบผู้ดูแล</h3></span>
+    </div>
+
+    <!-- Product Card -->
+    <div class="product-card" style="display: flex; align-items: flex-start;">
+        <div id="productImage" style="width: 80px; height: 80px; background: #ddd; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-right: 16px;">
+            <span>📷</span>
+        </div>
+        <div class="details">
+            <h2 id="productName" style="margin: 0; font-size: 18px; font-weight: bold; color: #333;">ชื่ออุปกรณ์</h2>
+            <p id="productPrice" style="margin: 4px 0; font-size: 16px; font-weight: 600; color: #4b5563;">ราคา/วัน</p>
+            <p id="productDates" style="margin: 4px 0; font-size: 12px; color: #6b7280;">วันที่เช่า</p>
+            <span class="status" id="productStatus">สถานะ</span>
+        </div>
+    </div>
+
+    <!-- Progress Tracking -->
+    <div class="progress-card">
+        <div class="steps" id="progressSteps"></div>
+
+    </div>
+
+    <!-- Panel ผู้ดูแล -->
+    <div id="adminPanel" style="display:none; margin:16px;">
+        <label for="statusSelect"><strong>ปรับสถานะการเช่า (สำหรับผู้ดูแล)</strong></label>
+        <select id="statusSelect" style="width:100%; padding:8px; margin-top:8px;">
+            <option value="1">1 - รอผู้ปล่อยเช่ายืนยัน</option>
+            <option value="2">2 - นัดรับ-ส่งอุปกรณ์</option>
+            <option value="3">3 - กำลังใช้งาน</option>
+            <option value="4">4 - คืนอุปกรณ์เรียบร้อย</option>
+        </select>
+        <button onclick="logoutAdmin()" class="btn btn-logout" style="margin-top:12px;">ออกจากระบบผู้ดูแล</button>
+    </div>
+
+    <!-- Location Card -->
+    <div class="location-card">
+        <h3 style="margin-top: 0; font-size: 16px; font-weight: bold; color: #333;">เช่าอุปกรณ์สำเร็จ</h3>
+        <div style="background-color: #f3f4f6; border-radius: 8px; padding: 12px; margin-bottom: 16px;">
+            <h4 style="margin: 0; font-weight: bold;">เช่าอุปกรณ์สำเร็จ</h4>
+            <p style="margin: 4px 0; font-size: 14px; color: #555;">กำลังอยู่ในช่วงระยะเวลาที่เช่า</p>
+            <div class="note-box">
+                <p style="margin: 0; font-size: 14px; font-weight: 500; color: #92400e;">หมายเหตุ / ช่องทางการเช่า</p>
+                <p id="productNote" style="margin: 4px 0; font-size: 14px; color: #b45309;">-</p>
+            </div>
+        </div>
+        <button class="btn btn-yellow" id="contactOwner">👤 ติดต่อผู้ปล่อยเช่า</button>
+        <button class="btn btn-green" style="margin-top: 8px;" id="callOwner">📞 โทรหาเจ้าของ</button>
+        <button class="btn btn-blue" style="margin-top: 8px;">💬 ส่งข้อความ</button>
+        <button class="btn btn-cancel" style="margin-top: 12px;">ยกเลิกการเช่า</button>
+	<button class="btn btn-outline" onclick="window.location.href='admin-list.html'">ดูประวัติทั้งหมด</button>
+
+    </div>
+
+    <!-- Info Card -->
+    <div class="info-card">
+        <div class="info-row"><span>📅 ระยะเวลาการเช่า</span><span id="rentalDays">-</span></div>
+        <div class="info-row"><span>💰 ราคารวม</span><span id="totalPrice" style="color: #16a34a;">-</span></div>
+        <div class="info-row"><span>⏳ เวลาที่เหลือ</span><span id="timeLeft" style="color: #d97706;">-</span></div>
+    </div>
+</div>
+
+<!-- กล่องล็อกอินผู้ดูแล -->
+<div id="adminLoginBox">
+    <div class="login-card">
+        <h3>เข้าสู่ระบบผู้ดูแล</h3>
+        <input type="password" id="adminPassword" placeholder="รหัสผ่าน" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #ccc;">
+        <p id="loginError" style="color: red; font-size: 14px; display: none; margin-top: 8px;">รหัสผ่านไม่ถูกต้อง</p>
+        <button onclick="checkAdminPassword()" style="margin-top: 12px; width: 100%; padding: 8px; border: none; border-radius: 6px; background: #3b82f6; color: white; font-weight: bold; cursor: pointer;">เข้าสู่ระบบ</button>
+    </div>
+</div>
+
+<script>
+function getQueryParam(param) {
+    return new URLSearchParams(window.location.search).get(param);
+}
+
+function updateCountdown(endDateStr) {
+    const endDate = new Date(endDateStr + "T23:59:59");
+    const now = new Date();
+    const diff = endDate - now;
+    if (diff <= 0) return document.getElementById('timeLeft').textContent = "หมดเวลาการเช่าแล้ว";
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    document.getElementById('timeLeft').textContent = `${days} วัน ${hours} ชั่วโมง ${minutes} นาที`;
+}
+
+
+function renderSteps(currentStep) {
+    const stepsData = ["รอผู้ปล่อยเช่ายืนยัน","นัดรับ-ส่งอุปกรณ์","กำลังใช้งาน","คืนอุปกรณ์เรียบร้อย"];
+    const stepsContainer = document.getElementById("progressSteps");
+    stepsContainer.innerHTML = "";
+    stepsData.forEach((label, index) => {
+        const stepNumber = index + 1;
+        const isActive = stepNumber <= currentStep;
+        const circle = document.createElement("div");
+        circle.className = "circle " + (isActive ? "green" : "gray");
+        circle.textContent = isActive ? "✔" : "○";
+        const text = document.createElement("span");
+        text.textContent = label;
+        const stepDiv = document.createElement("div");
+        stepDiv.className = "step";
+        stepDiv.appendChild(circle);
+        stepDiv.appendChild(text);
+        stepsContainer.appendChild(stepDiv);
+        if (stepNumber < stepsData.length) {
+            const line = document.createElement("div");
+            line.className = "line " + (stepNumber < currentStep ? "green" : "gray");
+            stepsContainer.appendChild(line);
+        }
+    });
+}
+function updateStatus(id, newStatus) {
+    let requests = JSON.parse(localStorage.getItem('rentalRequests') || '[]');
+    const index = requests.findIndex(r => r.id == id);
+
+    if (index !== -1) {
+        requests[index].status = newStatus;
+        localStorage.setItem('rentalRequests', JSON.stringify(requests));
+        alert(`อัปเดตสถานะเป็น "${newStatus}"`);
+        renderRequests();
+    }
+}
+
+// ===== เปิดหน้าติดตาม =====
+function viewTracking(id) {
+    window.open(`track.html?id=${id}`, "_blank");
+}
+
+renderRequests();
+
+function checkAdminPassword() {
+    if (document.getElementById("adminPassword").value === "shao109") {
+        localStorage.setItem("isAdmin", "true");
+        showAdminPanel();
+    } else {
+        document.getElementById("loginError").style.display = "block";
+    }
+}
+
+function logoutAdmin() {
+    localStorage.removeItem("isAdmin");
+    document.getElementById("adminPanel").style.display = "none";
+    document.getElementById("adminLoginBox").style.display = "flex";
+    document.getElementById("adminPassword").value = "";
+}
+
+function showAdminPanel() {
+    document.getElementById("adminLoginBox").style.display = "none";
+    document.getElementById("adminPanel").style.display = "block";
+}
+
+const id = getQueryParam('id');
+if (id) {
+    // โหลดจาก rentalRequests แทน rentals
+    const requests = JSON.parse(localStorage.getItem('rentalRequests') || '[]');
+    const itemIndex = requests.findIndex(r => r.id == id);
+    const item = requests[itemIndex];
+    if (item) {
+        if (!item.statusStep) item.statusStep = 1;
+        document.getElementById('productName').textContent = item.deviceName;
+        document.getElementById('productPrice').textContent = `${item.pricePerDay} บาท/วัน`;
+        document.getElementById('rentalDays').textContent = `${item.rentalDays} วัน`;
+        document.getElementById('totalPrice').textContent = `${item.pricePerDay * item.rentalDays} บาท`;
+        document.getElementById('productNote').textContent = item.description || '-';
+        document.getElementById('productDates').textContent = `${item.startDate || '-'} - ${item.endDate || '-'}`;
+        document.getElementById('productStatus').textContent = "กำลังใช้งาน";
+        if (item.images?.length > 0) {
+            document.getElementById('productImage').style.background = `url('${item.images[0]}') center/cover`;
+        }
+        document.getElementById('contactOwner').onclick = () => {
+            window.location.href = `mailto:${item.email}?subject=ติดต่อเช่า: ${item.deviceName}`;
+        };
+        updateCountdown(item.endDate || new Date());
+        setInterval(() => updateCountdown(item.endDate || new Date()), 60000);
+        renderSteps(item.statusStep);
+        document.getElementById("statusSelect").value = item.statusStep;
+        document.getElementById("statusSelect").addEventListener("change", function() {
+            item.statusStep = parseInt(this.value);
+            requests[itemIndex] = item;
+            localStorage.setItem("rentalRequests", JSON.stringify(requests));
+            renderSteps(item.statusStep);
+        });
+        if (localStorage.getItem("isAdmin") === "true") {
+            showAdminPanel();
+        }
+    }
+}
+
+</script>
+</body>
+</html>

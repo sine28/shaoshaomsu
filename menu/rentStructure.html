@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>รายละเอียดการเช่า</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 480px;
+            background: white;
+            margin: 30px auto;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            padding: 20px;
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        .rental-id {
+            background: #f1f3f5;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: bold;
+            text-align: center;
+            font-size: 18px;
+            color: #333;
+        }
+        .item-details {
+            margin-top: 20px;
+        }
+        .item-details img {
+            width: 100%;
+            border-radius: 8px;
+        }
+        .item-info {
+            margin-top: 10px;
+        }
+        .label {
+            font-weight: bold;
+            color: #555;
+        }
+        .value {
+            color: #333;
+        }
+        .track-btn {
+            display: block;
+            width: 100%;
+            background: #007bff;
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            border: none;
+            font-size: 16px;
+            margin-top: 20px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+        }
+        .track-btn:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>รายละเอียดการเช่า</h2>
+    <div class="rental-id">
+        รหัสการเช่า: <span id="rentalCode">RENT-20250815-001</span>
+    </div>
+
+    <div class="item-details">
+        <img src="ipad.jpg" alt="iPad Pro 2022">
+        <div class="item-info">
+            <p><span class="label">ชื่ออุปกรณ์:</span> <span class="value">iPad Pro 2022</span></p>
+            <p><span class="label">ราคาเช่า:</span> <span class="value">300 บาท/วัน</span></p>
+            <p><span class="label">ระยะเวลาเช่า:</span> <span class="value">15 ส.ค. 2568 - 17 ส.ค. 2568</span></p>
+            <p><span class="label">สถานะ:</span> <span class="value" style="color: orange;">รอยืนยันการเช่า</span></p>
+        </div>
+    </div>
+
+    <a href="tracking.html?rental_id=RENT-20250815-001" class="track-btn">ติดตามสถานะการเช่า</a>
+</div>
+
+</body>
+</html>

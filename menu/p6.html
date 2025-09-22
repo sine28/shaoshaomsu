@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>รายละเอียดอุปกรณ์เช่า</title>
+<style>
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f4f1ec;
+  padding: 20px;
+  max-width: 700px;
+  margin: auto;
+  color: #5d4e37;
+}
+h1 {
+  text-align: center;
+  margin-bottom: 30px;
+}
+.detail-container {
+  background: #faf8f4;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(101, 67, 33, 0.1);
+}
+.field {
+  margin-bottom: 20px;
+}
+.field strong {
+  display: inline-block;
+  width: 120px;
+}
+.images {
+  margin-top: 20px;
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+.images img {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(101, 67, 33, 0.2);
+}
+.back-btn {
+  display: block;
+  margin: 30px auto 0;
+  background-color: #689f38;
+  color: #faf8f4;
+  text-align: center;
+  padding: 15px 40px;
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: 600;
+  width: fit-content;
+}
+.back-btn:hover {
+  background-color: #558b2f;
+}
+</style>
+</head>
+<body>
+
+<h1>รายละเอียดอุปกรณ์เช่า</h1>
+
+<div class="detail-container" id="detailContainer"></div>
+
+<a href="p1.html" class="back-btn">กลับไปหน้ารายการอุปกรณ์</a>
+
+<script>
+function getQueryParam(param) {
+  const urlParams = new URLSearchParams(window.location.search);
+  return urlParams.get(param);
+}
+
+const id = getQueryParam('id');
+const detailContainer = document.getElementById('detailContainer');
+
+if (!id) {
+  detailContainer.innerHTML = '<p>ไม่พบข้อมูลอุปกรณ์</p>';
+} else {
+  const rentals = JSON.parse(localStorage.getItem('rentals') || '[]');
+  const item = rentals.find(r => r.id == id);
+
+  if (!item) {
+    detailContainer.innerHTML = '<p>ไม่พบข้อมูลอุปกรณ์ที่เลือก</p>';
+  } else {
+    detailContainer.innerHTML = `
+      <div class="field"><strong>ชื่ออุปกรณ์:</strong> ${item.deviceName}</div>
+      <div class="field"><strong>หมวดหมู่:</strong> ${item.category}</div>
+      <div class="field"><strong>ราคา/วัน:</strong> ${item.pricePerDay} บาท</div>
+      <div class="field"><strong>รายละเอียด:</strong><br>${item.description.replace(/\n/g, '<br>')}</div>
+      <div class="field"><strong>สถานที่:</strong> ${item.location}</div>
+      <div class="field"><strong>ชื่อผู้ให้เช่า:</strong> ${item.ownerName}</div>
+      <div class="field"><strong>Email:</strong> ${item.email}</div>
+      <div class="field"><strong>รูปภาพ:</strong></div>
+      <div class="images">
+        ${item.images.map(src => `<img src="${src}" alt="รูปอุปกรณ์" />`).join('')}
+      </div>
+    `;
+  }
+}
+</script>
+
+</body>
+</html>

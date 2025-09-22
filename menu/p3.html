@@ -1,0 +1,1140 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ปล่อยเช่าอุปกรณ์</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f4f1ec;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #faf8f4;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(101, 67, 33, 0.1);
+            padding: 30px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .header h1 {
+            font-size: 32px;
+            font-weight: 700;
+            color: #5d4e37;
+            margin-bottom: 10px;
+        }
+        
+        .form-section {
+            margin-bottom: 30px;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .form-group {
+            flex: 1;
+        }
+        
+        .form-group.full-width {
+            width: 100%;
+        }
+        
+        .form-group label {
+            display: block;
+            font-size: 16px;
+            font-weight: 600;
+            color: #5d4e37;
+            margin-bottom: 8px;
+        }
+        
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e8dcc6;
+            border-radius: 12px;
+            font-size: 16px;
+            color: #5d4e37;
+            background: #faf8f4;
+            transition: all 0.3s ease;
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #8b7355;
+            box-shadow: 0 0 0 3px rgba(139, 115, 85, 0.1);
+        }
+        
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+        
+        .photo-upload {
+            border: 2px dashed #d7ccc8;
+            border-radius: 12px;
+            padding: 40px;
+            text-align: center;
+            background: #f9f6f1;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .photo-upload:hover {
+            border-color: #8b7355;
+            background: #f4f1ec;
+        }
+        
+        .photo-upload .upload-icon {
+            font-size: 48px;
+            color: #a1887f;
+            margin-bottom: 15px;
+            display: block;
+        }
+        
+        .photo-upload .upload-text {
+            font-size: 18px;
+            color: #8d6e63;
+            font-weight: 500;
+        }
+        
+        .currency-input {
+            position: relative;
+        }
+        
+        .currency-input input {
+            padding-right: 50px;
+        }
+        
+        .currency-label {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #8d6e63;
+            font-weight: 600;
+            font-size: 16px;
+            pointer-events: none;
+        }
+        
+        .submit-btn {
+            background: linear-gradient(135deg, #689f38 0%, #7cb342 100%);
+            color: #faf8f4;
+            border: none;
+            padding: 18px 40px;
+            font-size: 18px;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 20px;
+            box-shadow: 0 4px 15px rgba(104, 159, 56, 0.3);
+        }
+        
+        .submit-btn:hover {
+            background: linear-gradient(135deg, #558b2f 0%, #689f38 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(104, 159, 56, 0.4);
+        }
+        
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+        
+        .price-row {
+            display: flex;
+            gap: 15px;
+            align-items: end;
+        }
+        
+        .price-row .form-group:first-child {
+            flex: 2;
+        }
+        
+        .price-row .form-group:last-child {
+            flex: 1;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .image-preview {
+            margin-top: 15px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .preview-item {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(101, 67, 33, 0.2);
+        }
+        
+        .preview-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .preview-item .remove-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: rgba(93, 78, 55, 0.8);
+            color: #faf8f4;
+            border: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                margin: 0 10px;
+                padding: 20px;
+            }
+            
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+            
+            .price-row {
+                flex-direction: column;
+                gap: 0;
+            }
+            
+            .header h1 {
+                font-size: 28px;
+            }
+        }
+        
+        .success-message {
+            background: linear-gradient(135deg, #7cb342 0%, #689f38 100%);
+            color: #faf8f4;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            margin-top: 20px;
+            display: none;
+        }
+        
+        .success-message.show {
+            display: block;
+            animation: slideIn 0.5s ease;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #faf9f6 0%, #f5f2ed 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #f8e8a8, #f0d860);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dog-face {
+            font-size: 24px;
+            color: #333;
+        }
+
+        .brand-text {
+            font-weight: 700;
+        }
+
+        .brand-name {
+            font-size: 28px;
+            color: #8B7355;
+            line-height: 1;
+            opacity: 0.7;
+        }
+
+        .brand-subtitle {
+            font-size: 20px;
+            color: #DAA520;
+            font-weight: 800;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 35px;
+        }
+
+        .nav-menu a {
+            color: #8B7355;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 16px;
+            transition: color 0.3s;
+        }
+
+        .nav-menu a:hover,
+        .nav-menu a.active {
+            color: #A0522D;
+        }
+
+        .auth-btn {
+            background: #8B4513;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .auth-btn:hover {
+            background: #A0522D;
+            transform: translateY(-2px);
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 60px 0;
+        }
+
+        .hero-section {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 80px;
+            position: relative;
+        }
+
+        .hero-text {
+            flex: 1;
+            max-width: 600px;
+        }
+
+        .hero-title {
+            font-size: 48px;
+            font-weight: 800;
+            color: #8B4513;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .hero-subtitle {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+
+        .search-btn {
+            background: #8B4513;
+            color: white;
+            padding: 16px 32px;
+            border: none;
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(139, 69, 19, 0.3);
+        }
+
+        .search-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(139, 69, 19, 0.4);
+        }
+
+        .hero-dog {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 300px;
+            height: 300px;
+            background: linear-gradient(135deg, #f8e8a8, #f0d860);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 120px;
+            opacity: 0.9;
+            box-shadow: 0 20px 60px rgba(240, 216, 96, 0.3);
+        }
+
+        .bow-tie {
+            position: absolute;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 20px;
+            background: #87CEEB;
+            border-radius: 15px;
+        }
+
+        /* Filter Section */
+        .filter-section {
+            margin-bottom: 40px;
+        }
+
+        .filter-dropdown {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 30px;
+        }
+
+        .dropdown-btn {
+            background: white;
+            border: 2px solid #ddd;
+            padding: 12px 20px;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 150px;
+            transition: all 0.3s;
+        }
+
+        .dropdown-btn:hover {
+            border-color: #8B4513;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background: white;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            border-radius: 15px;
+            z-index: 1;
+            min-width: 200px;
+            top: 100%;
+            left: 0;
+            margin-top: 5px;
+        }
+
+        .dropdown-content.show {
+            display: block;
+        }
+
+        .dropdown-item {
+            padding: 12px 20px;
+            cursor: pointer;
+            transition: background 0.3s;
+            border-radius: 15px;
+        }
+
+        .dropdown-item:hover {
+            background: #f5f5f5;
+        }
+
+        .dropdown-item.active {
+            background: #8B4513;
+            color: white;
+        }
+
+        /* Category Tabs */
+        .category-tabs {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 50px;
+            flex-wrap: wrap;
+        }
+
+        .category-tab {
+            padding: 12px 24px;
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+
+        .category-tab:hover,
+        .category-tab.active {
+            background: #8B4513;
+            color: white;
+            border-color: #8B4513;
+            transform: translateY(-2px);
+        }
+
+        /* Products Grid */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 24px;
+            padding: 25px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #8B4513, #A0522D);
+            transform: scaleX(0);
+            transition: transform 0.3s;
+        }
+
+        .product-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 45px rgba(0,0,0,0.12);
+        }
+
+        .product-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 11px;
+            font-weight: 600;
+            color: white;
+        }
+
+        .badge-recommended {
+            background: linear-gradient(135deg, #8BC34A, #689F38);
+        }
+
+        .badge-new {
+            background: linear-gradient(135deg, #FF9800, #F57C00);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-image img {
+            width: 80%;
+            height: 80%;
+            object-fit: contain;
+        }
+
+        .ipad-image {
+            width: 150px;
+            height: 200px;
+            background: linear-gradient(135deg, #FF6B6B, #4ECDC4, #45B7D1, #96CEB4, #FFEAA7);
+            border-radius: 20px;
+            border: 8px solid #333;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .laptop-image {
+            width: 180px;
+            height: 120px;
+            position: relative;
+        }
+
+        .laptop-screen {
+            width: 100%;
+            height: 80px;
+            background: #333;
+            border-radius: 8px 8px 0 0;
+            position: relative;
+            border: 3px solid #666;
+        }
+
+        .laptop-base {
+            width: 100%;
+            height: 40px;
+            background: #D2B48C;
+            border-radius: 0 0 12px 12px;
+            position: relative;
+        }
+
+        .powerbank-image {
+            width: 100px;
+            height: 60px;
+            background: #F5F5DC;
+            border-radius: 15px;
+            position: relative;
+            border: 2px solid #D3D3D3;
+        }
+
+        .cable-image {
+            width: 120px;
+            height: 120px;
+            position: relative;
+        }
+
+        .cable-connector {
+            width: 20px;
+            height: 15px;
+            background: #FFE4B5;
+            border-radius: 5px;
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .cable-wire {
+            width: 100px;
+            height: 6px;
+            background: #FFE4B5;
+            border-radius: 3px;
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%) rotate(-20deg);
+        }
+
+        .product-name {
+            font-size: 20px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .product-price {
+            font-size: 18px;
+            font-weight: 700;
+            color: #8B4513;
+            margin-bottom: 20px;
+        }
+
+        .product-btn {
+            width: 100%;
+            padding: 14px;
+            background: transparent;
+            color: #8B4513;
+            border: 2px solid #8B4513;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .product-btn:hover {
+            background: #8B4513;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-top: 50px;
+        }
+
+        .pagination-btn {
+            width: 40px;
+            height: 40px;
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+
+        .pagination-btn:hover,
+        .pagination-btn.active {
+            background: #8B4513;
+            color: white;
+            border-color: #8B4513;
+        }
+
+        .pagination-btn.nav {
+            background: #8B4513;
+            color: white;
+            border-color: #8B4513;
+        }
+
+        .pagination-btn.nav:hover {
+            background: #A0522D;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .nav-menu {
+                flex-wrap: wrap;
+                gap: 15px;
+            }
+
+            .hero-section {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .hero-dog {
+                position: relative;
+                right: auto;
+                top: auto;
+                transform: none;
+                width: 200px;
+                height: 200px;
+                font-size: 80px;
+                margin-top: 30px;
+            }
+
+            .hero-title {
+                font-size: 36px;
+            }
+
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .category-tabs {
+                justify-content: center;
+            }
+        }
+body { font-family: sans-serif; max-width: 700px; margin: auto; }
+    .preview-item { display: inline-block; position: relative; margin: 5px; }
+    .preview-item img { width: 100px; height: 100px; object-fit: cover; border-radius: 5px; }
+    .remove-btn { position: absolute; top: 0; right: 0; background: red; color: white; border: none; cursor: pointer; }
+        body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f4f1ec;
+      padding: 20px;
+      max-width: 800px;
+      margin: auto;
+    }
+
+    h2 {
+      text-align: center;
+      color: #5d4e37;
+      margin-bottom: 30px;
+    }
+
+    form label {
+      display: block;
+      margin-bottom: 10px;
+      color: #5d4e37;
+      font-weight: 600;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 20px;
+      border: 2px solid #e8dcc6;
+      border-radius: 10px;
+      background-color: #faf8f4;
+      font-size: 16px;
+    }
+
+    input[type="file"] {
+      padding: 6px;
+    }
+
+    button[type="submit"] {
+      background-color: #689f38;
+      color: #fff;
+      padding: 14px 30px;
+      border: none;
+      border-radius: 30px;
+      font-size: 18px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      width: 100%;
+    }
+
+    button[type="submit"]:hover {
+      background-color: #558b2f;
+    }
+
+    .preview-item {
+      display: inline-block;
+      position: relative;
+      margin: 10px 10px 0 0;
+    }
+
+    .preview-item img {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .remove-btn {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background: #d32f2f;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    #imagePreview {
+      margin-top: 10px;
+    }
+
+</style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo-container">
+           <img src="../image/10.png" width="100">
+                <div class="brand-text">
+                </div>
+            </div>
+            
+            <nav>
+                <ul class="nav-menu">
+                <li><a href="../index.html">หน้าหลัก</a></li>
+                <li><a href="p1.html">เช่าอุปกรณ์</a></li>
+                <li><a href="p3.html">ปล่อยเช่าอุปกรณ์</a></li>
+                <li><a href="track.html">ติดตามสถานะการเช่า</a></li>
+                <li><a href="admin.html">ระบบผู้ดูแล</a></li>
+                </ul>
+            </nav>
+            
+
+        </header>
+
+    <div class="container">
+	        <div class="hero-text">
+                    <h1 class="hero-title">ปล่อยเช่าอุปกรณ์</h1>
+                </div>
+    <form id="rentalForm">
+        <label>ชื่ออุปกรณ์:
+            <input type="text" id="deviceName" required />
+        </label>
+
+        <label>หมวดหมู่:
+            <select id="category" required>
+                <option value="">-- เลือกหมวดหมู่ --</option>
+                <option value="iPad">iPad</option>
+                <option value="Notebook">Notebook</option>
+                <option value="Powerbank">Powerbank</option>
+                <option value="สายชาร์จ">สายชาร์จ</option>
+            </select>
+        </label>
+
+  <label>ประเภทการใช้งาน:
+    <select id="usageType" required>
+      <option value="">-- เลือกประเภทการใช้งาน --</option>
+      <option value="work">ทำงานทั่วไป</option>
+      <option value="edit">ตัดต่อ / กราฟิก</option>
+      <option value="game">เล่นเกม / มัลติมีเดีย</option>
+      <option value="special">งานเฉพาะทาง</option>
+    </select>
+  </label>
+
+        <label>ราคา/วัน:
+            <input type="number" id="pricePerDay" required />
+        </label>
+
+        <label>จำนวนวันที่ปล่อยเช่า:
+            <input type="number" id="rentalDays" min="1" required />
+        </label>
+
+        <label>รายละเอียด:
+            <textarea id="description" required></textarea>
+        </label>
+
+        <label>สถานที่:
+            <input type="text" id="location" required />
+        </label>
+
+        <label>ชื่อผู้ให้เช่า:
+            <input type="text" id="ownerName" required />
+        </label>
+
+        <label>Email:
+            <input type="email" id="email" required />
+        </label>
+
+        <label>อัปโหลดรูป (สูงสุด 5 รูป):
+            <input type="file" id="photoInput" accept="image/*" multiple />
+        </label>
+
+        <div id="imagePreview"></div>
+	<button type="submit" class="submit-btn">บันทึกประกาศ</button>
+
+    </form>
+
+   <script>
+let selectedImages = [];
+let editId = null;
+
+// ฟังก์ชันบีบอัดและย่อขนาดรูป
+function resizeImage(file, maxWidth, maxHeight, callback) {
+    const reader = new FileReader();
+    reader.onload = function(event) {
+        const img = new Image();
+        img.onload = function() {
+            let width = img.width;
+            let height = img.height;
+
+            if (width > maxWidth) {
+                height *= maxWidth / width;
+                width = maxWidth;
+            }
+            if (height > maxHeight) {
+                width *= maxHeight / height;
+                height = maxHeight;
+            }
+
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = width;
+            canvas.height = height;
+
+            ctx.drawImage(img, 0, 0, width, height);
+
+            const resizedBase64 = canvas.toDataURL('image/jpeg', 0.7);
+            callback(resizedBase64);
+        };
+        img.src = event.target.result;
+    };
+    reader.readAsDataURL(file);
+}
+
+// อัปเดต event เลือกรูป
+document.getElementById('photoInput').addEventListener('change', function (e) {
+    const files = Array.from(e.target.files);
+    const previewContainer = document.getElementById('imagePreview');
+
+    files.forEach((file) => {
+        if (selectedImages.length >= 5) {
+            alert("อัปโหลดได้สูงสุด 5 รูป");
+            return;
+        }
+
+        resizeImage(file, 800, 800, function(imgBase64) {
+            selectedImages.push(imgBase64);
+
+            const div = document.createElement('div');
+            div.className = 'preview-item';
+
+            const img = document.createElement('img');
+            img.src = imgBase64;
+            div.appendChild(img);
+
+            const removeBtn = document.createElement('button');
+            removeBtn.type = "button";
+            removeBtn.className = 'remove-btn';
+            removeBtn.innerHTML = "&times;";
+            removeBtn.addEventListener('click', () => {
+                const index = selectedImages.indexOf(imgBase64);
+                if (index !== -1) {
+                    selectedImages.splice(index, 1);
+                }
+                div.remove();
+            });
+
+            div.appendChild(removeBtn);
+            previewContainer.appendChild(div);
+        });
+    });
+
+    e.target.value = '';
+});
+
+// โหลดข้อมูลแก้ไข
+function loadEditData() {
+    const params = new URLSearchParams(window.location.search);
+    if (params.has('edit')) {
+        editId = parseInt(params.get('edit'), 10);
+        const rentals = JSON.parse(localStorage.getItem('rentals') || '[]');
+        const item = rentals.find(r => r.id === editId);
+        if (item) {
+            document.getElementById('deviceName').value = item.deviceName;
+            document.getElementById('category').value = item.category;
+            document.getElementById('usageType').value = item.usageType;
+            document.getElementById('pricePerDay').value = item.pricePerDay;
+            document.getElementById('rentalDays').value = item.rentalDays;
+            document.getElementById('description').value = item.description;
+            document.getElementById('location').value = item.location;
+            document.getElementById('ownerName').value = item.ownerName;
+            document.getElementById('email').value = item.email;
+
+            selectedImages = Array.isArray(item.images) ? [...item.images] : [];
+            const previewContainer = document.getElementById('imagePreview');
+            previewContainer.innerHTML = '';
+            selectedImages.forEach(imgData => {
+                const div = document.createElement('div');
+                div.className = 'preview-item';
+
+                const img = document.createElement('img');
+                img.src = imgData;
+                div.appendChild(img);
+
+                const removeBtn = document.createElement('button');
+                removeBtn.type = "button";
+                removeBtn.className = 'remove-btn';
+                removeBtn.innerHTML = "&times;";
+                removeBtn.addEventListener('click', () => {
+                    const index = selectedImages.indexOf(imgData);
+                    if (index !== -1) {
+                        selectedImages.splice(index, 1);
+                    }
+                    div.remove();
+                });
+
+                div.appendChild(removeBtn);
+                previewContainer.appendChild(div);
+            });
+        }
+    }
+}
+
+// บันทึกข้อมูล
+document.getElementById('rentalForm').addEventListener('submit',function(e){
+    e.preventDefault();
+    const rentals = JSON.parse(localStorage.getItem('rentals') || '[]');
+    const rentalData = {
+        id: editId!==null? editId : Date.now(),
+        deviceName: document.getElementById('deviceName').value,
+        category: document.getElementById('category').value,
+        usageType: document.getElementById('usageType').value,
+        pricePerDay: parseFloat(document.getElementById('pricePerDay').value),
+        rentalDays: parseInt(document.getElementById('rentalDays').value,10),
+        description: document.getElementById('description').value,
+        location: document.getElementById('location').value,
+        ownerName: document.getElementById('ownerName').value,
+        email: document.getElementById('email').value,
+        images: selectedImages
+    };
+
+    if(editId!==null){
+        const index=rentals.findIndex(r=>r.id===editId);
+        if(index!==-1) rentals[index]=rentalData;
+        alert("แก้ไขประกาศเรียบร้อยแล้ว");
+    } else {
+        rentals.push(rentalData);
+        alert("บันทึกประกาศเรียบร้อยแล้ว");
+    }
+
+    localStorage.setItem('rentals',JSON.stringify(rentals));
+    window.location.href="p1.html";
+});
+
+window.addEventListener('DOMContentLoaded',loadEditData);
+</script>
+
+</body>
+</html>

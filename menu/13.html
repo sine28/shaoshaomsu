@@ -1,0 +1,71 @@
+<?php
+$pdo = new PDO("mysql:host=localhost;dbname=mydb", "root", "");
+$rentals = $pdo->query("SELECT * FROM rentals ORDER BY created_at DESC")->fetchAll(PDO::FETCH_ASSOC);
+?>
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>จัดการการเช่า</title>
+<style>
+    body { font-family: Arial; background: #f5f6fa; padding: 20px; }
+    table { width: 100%; border-collapse: collapse; background: white; }
+    th, td { padding: 10px; border-bottom: 1px solid #ddd; }
+    th { background: #f0f0f0; }
+    .status { padding: 5px 10px; border-radius: 5px; color: white; }
+    .pending { background: orange; }
+    .delivery { background: dodgerblue; }
+    .inuse { background: green; }
+    .done { background: gray; }
+</style>
+<script>
+function updateStatus(id, status) {
+    fetch("update_status.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: "rental_id=" + id + "&status=" + status
+    }).then(() => location.reload());
+}
+</script>
+</head>
+<body>
+
+<h2>📋 จัดการและติดตามสถานะการเช่า</h2>
+<table>
+<tr>
+    <th>รหัสการเช่า</th>
+    <th>ชื่อผู้เช่า</th>
+    <th>อุปกรณ์</th>
+    <th>วันที่เช่า</th>
+    <th>สถานะ</th>
+    <th>จัดการ</th>
+</tr>
+<?php foreach($rentals as $r): ?>
+<tr>
+    <td><?= $r['rental_id'] ?></td>
+    <td><?= $r['renter_name'] ?></td>
+    <td><?= $r['product_id'] ?></td>
+    <td><?= $r['created_at'] ?></td>
+    <td>
+        <span class="status 
+            <?= $r['status']=='รอยืนยันการเช่า'?'pending':
+                ($r['status']=='รอรับ-ส่ง'?'delivery':
+                ($r['status']=='กำลังใช้งาน'?'inuse':'done')) ?>">
+            <?= $r['status'] ?>
+        </span>
+    </td>
+    <td>
+        <select onchange="updateStatus(<?= $r['rental_id'] ?>, this.value)">
+            <option value="">-- เปลี่ยนสถานะ --</option>
+            <option value="รอยืนยันการเช่า">รอยืนยันการเช่า</option>
+            <option value="รอรับ-ส่ง">รอรับ-ส่ง</option>
+            <option value="กำลังใช้งาน">กำลังใช้งาน</option>
+            <option value="เสร็จสิ้น">เสร็จสิ้น</option>
+        </select>
+    </td>
+</tr>
+<?php endforeach; ?>
+</table>
+
+</body>
+</html>

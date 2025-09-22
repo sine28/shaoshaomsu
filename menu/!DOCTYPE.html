@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>รายละเอียดอุปกรณ์เช่า</title>
+<style>
+  body {
+    font-family: "Prompt", sans-serif;
+    background-color: #f5f7fa;
+    margin: 0;
+    padding: 20px;
+    color: #333;
+  }
+  h1 {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  .detail-container {
+    background: #fff;
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    max-width: 800px;
+    margin: auto;
+  }
+  .field {
+    margin-bottom: 15px;
+  }
+  .field strong {
+    display: inline-block;
+    width: 140px;
+    color: #0d6efd;
+  }
+  .images {
+    margin-top: 20px;
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+  }
+  .images img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  }
+  .contact-btn {
+    display: inline-block;
+    margin-top: 20px;
+    background-color: #0d6efd;
+    color: #fff;
+    padding: 12px 30px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .contact-btn:hover {
+    background-color: #0b5ed7;
+  }
+  .btn-group {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin: 30px auto;
+  }
+  .back-btn {
+    background-color: #6c757d;
+    color: #fff;
+    padding: 12px 25px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .back-btn:hover {
+    background-color: #495057;
+  }
+  hr {
+    margin: 30px 0;
+    border: none;
+    border-top: 1px solid #ddd;
+  }
+  .reviews h2 {
+    margin-bottom: 15px;
+  }
+  .review {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+  }
+  .rating {
+    color: #ffc107;
+    margin-bottom: 5px;
+  }
+  .review strong {
+    color: #0d6efd;
+  }
+  .review-form textarea {
+    width: 100%;
+    min-height: 80px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px;
+    resize: vertical;
+    font-family: inherit;
+  }
+  .review-form button {
+    margin-top: 10px;
+    background: #0d6efd;
+    color: #fff;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  .review-form button:hover {
+    background: #0b5ed7;
+  }
+</style>
+</head>
+<body>
+
+<h1>รายละเอียดอุปกรณ์เช่า</h1>
+
+<div class="detail-container" id="detailContainer"></div>
+
+<!-- ปุ่มกลับ -->
+<div class="btn-group">
+  <a href="../index.html" class="back-btn">หน้าหลัก</a>
+  <a href="p1.html" class="back-btn">รายการอุปกรณ์</a>
+</div>
+
+<script>
+function getQueryParam(param) {
+  const urlParams = new URLSearchParams(window.location.search);
+  return urlParams.get(param);
+}
+
+const id = getQueryParam('id');
+const detailContainer = document.getElementById('detailContainer');
+
+if (!id) {
+  detailContainer.innerHTML = '<p>ไม่พบข้อมูลอุปกรณ์</p>';
+} else {
+  const rentals = JSON.parse(localStorage.getItem('rentals') || '[]');
+  const item = rentals.find(r => r.id == id);
+
+  if (!item) {
+    detailContainer.innerHTML = '<p>ไม่พบข้อมูลอุปกรณ์ที่เลือก</p>';
+  } else {
+    detailContainer.innerHTML = `
+      <div class="field"><strong>ชื่ออุปกรณ์:</strong> ${item.deviceName}</div>
+      <div class="field"><strong>หมวดหมู่:</strong> ${item.category}</div>
+      <div class="field"><strong>ราคา/วัน:</strong> ${item.pricePerDay} บาท</div>
+      <div class="field"><strong>จำนวนวันที่ปล่อยเช่า:</strong> ${item.rentalDays} วัน</div>
+      <div class="field"><strong>รายละเอียด:</strong><br>${item.description.replace(/\n/g, '<br>')}</div>
+      <div class="field"><strong>สถานที่:</strong> ${item.location}</div>
+      <div class="field"><strong>ชื่อผู้ให้เช่า:</strong> ${item.ownerName}</div>
+      <div class="field"><strong>Email:</strong> ${item.email}</div>
+      <div class="field"><strong>รูปภาพ:</strong></div>
+      <div class="images">
+        ${item.images.map(src => `<img src="${src}" alt="รูปอุปกรณ์" />`).join('')}
+      </div>
+      <center>
+        <a href="#" class="contact-btn" onclick="handleRentalRequest('${item.id}', event)">ติดต่อเช่า</a>
+      </center>
+
+      <hr>
+
+      <!-- ส่วนรีวิว -->
+      <div class="reviews">
+        <h2>รีวิวจากผู้ใช้งาน</h2>
+        <div id="reviewList"></div>
+        <div class="review-form">
+          <h3>เขียนรีวิวของคุณ</h3>
+          <textarea id="reviewInput" placeholder="แชร์ประสบการณ์การใช้งาน..."></textarea>
+          <button onclick="addReview('${item.id}')">ส่งรีวิว</button>
+        </div>
+      </div>
+    `;
+
+    loadReviews(item.id);
+  }
+}
+
+function handleRentalRequest(itemId, e) {
+  e.preventDefault();
+
+  const rentals = JSON.parse(localStorage.getItem('rentals') || '[]');
+  const item = rentals.find(r => r.id == itemId);
+  if (!item) return alert("ไม่พบข้อมูลอุปกรณ์");
+
+  let requests = JSON.parse(localStorage.getItem('rentalRequests') || '[]');
+
+  const today = new Date();
+  const endDate = new Date(today.getTime() + item.rentalDays * 24 * 60 * 60 * 1000);
+  const requestId = 'REQ-' + Date.now();
+
+  const newRequest = {
+    id: requestId,
+    deviceName: item.deviceName,
+    category: item.category,
+    pricePerDay: item.pricePerDay,
+    rentalDays: item.rentalDays,
+    description: item.description || '',
+    location: item.location,
+    ownerName: item.ownerName,
+    email: item.email,
+    images: item.images || [],
+    startDate: today.toISOString().split('T')[0],
+    endDate: endDate.toISOString().split('T')[0],
+    status: "รอผู้ปล่อยเช่ายืนยัน"
+  };
+
+  requests.push(newRequest);
+  localStorage.setItem('rentalRequests', JSON.stringify(requests));
+
+  window.location.href = `track.html?id=${requestId}`;
+}
+
+/* ===== ระบบรีวิว (เก็บใน localStorage) ===== */
+function loadReviews(itemId) {
+  const reviews = JSON.parse(localStorage.getItem('reviews') || '{}');
+  const itemReviews = reviews[itemId] || [];
+
+  const reviewList = document.getElementById('reviewList');
+  reviewList.innerHTML = itemReviews.map(r => `
+    <div class="review">
+      <div class="rating">${'⭐'.repeat(r.rating)}</div>
+      <p><strong>${r.user}</strong> – ${r.text}</p>
+    </div>
+  `).join('');
+}
+
+function addReview(itemId) {
+  const input = document.getElementById('reviewInput');
+  const text = input.value.trim();
+  if (!text) return alert("กรุณาเขียนรีวิว");
+
+  const reviews = JSON.parse(localStorage.getItem('reviews') || '{}');
+  if (!reviews[itemId]) reviews[itemId] = [];
+
+  reviews[itemId].push({
+    user: "ผู้ใช้งาน",
+    rating: 5,
+    text
+  });
+
+  localStorage.setItem('reviews', JSON.stringify(reviews));
+  input.value = "";
+  loadReviews(itemId);
+}
+</script>
+
+</body>
+</html>

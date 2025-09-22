@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>รายละเอียดอุปกรณ์เช่า</title>
+<style>
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f1ec;
+    padding: 20px;
+    max-width: 1000px;
+    margin: auto;
+    color: #5d4e37;
+  }
+  .container {
+    background: #faf8f4;
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(101, 67, 33, 0.1);
+  }
+  .header {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    margin-bottom: 30px;
+  }
+  .gallery-section {
+    flex: 1;
+    min-width: 300px;
+    max-width: 400px;
+  }
+  .item-info {
+    flex: 1;
+    min-width: 300px;
+  }
+  h1 {
+    margin: 0 0 15px;
+    font-size: 2.2rem;
+    color: #8B4513;
+  }
+  .category-badge {
+    display: inline-block;
+    background: rgba(139, 69, 19, 0.1);
+    color: #8B4513;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 15px;
+  }
+  .price {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #a0522d;
+    margin: 15px 0;
+    padding: 15px;
+    background: rgba(160, 82, 45, 0.1);
+    border-radius: 12px;
+    text-align: center;
+  }
+  .info-section {
+    margin: 25px 0;
+  }
+  .info-line {
+    display: flex;
+    align-items: baseline;
+    margin: 12px 0;
+    font-size: 1.1rem;
+  }
+  .info-label {
+    font-weight: 600;
+    color: #8B4513;
+    min-width: 120px;
+    margin-right: 15px;
+  }
+  .info-value {
+    color: #5d4e37;
+    flex: 1;
+  }
+  .description-section {
+    margin: 25px 0;
+  }
+  .description-section h3 {
+    margin: 0 0 15px;
+    color: #8B4513;
+    font-size: 1.3rem;
+  }
+  .description-text {
+    line-height: 1.6;
+    font-size: 1rem;
+    color: #5d4e37;
+    margin: 0;
+  }
+  .btn {
+    background: #7f5a36;
+    color: #faf8f4;
+    padding: 15px 30px;
+    border: none;
+    border-radius: 30px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s;
+    box-shadow: 0 4px 15px rgba(127, 90, 54, 0.3);
+    width: 100%;
+    margin: 15px 0;
+  }
+  .btn:hover {
+    background: #5d3f28;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(127, 90, 54, 0.4);
+  }
+  hr {
+    margin: 30px 0;
+    border: none;
+    border-top: 1px solid #ddd;
+  }
+  .gallery {
+    position: relative;
+    margin-bottom: 20px;
+  }
+  .main-image {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 16px;
+    box-shadow: 0 4px 15px rgba(101, 67, 33, 0.2);
+  }
+  .thumbnail-gallery {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+    overflow-x: auto;
+    padding: 5px 0;
+  }
+  .thumbnail {
+    width: 70px;
+    height: 70px;
+    object-fit: cover;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s;
+    flex-shrink: 0;
+    border: 2px solid transparent;
+  }
+  .thumbnail:hover {
+    transform: scale(1.1);
+    border-color: #8B4513;
+  }
+  .thumbnail.active {
+    border-color: #8B4513;
+    transform: scale(1.05);
+  }
+  .gallery .prev, .gallery .next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(95, 60, 30, 0.8);
+    color: #fff;
+    border: none;
+    padding: 12px 15px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: all 0.3s;
+  }
+  .gallery .prev { left: 15px; }
+  .gallery .next { right: 15px; }
+  .gallery .prev:hover, .gallery .next:hover {
+    background: rgba(95, 60, 30, 1);
+    transform: translateY(-50%) scale(1.1);
+  }
+  .reviews {
+    background: #fff;
+    padding: 25px;
+    border-radius: 12px;
+    margin: 25px 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  }
+  .reviews h2 { 
+    margin-bottom: 20px; 
+    color: #8B4513;
+    font-size: 1.5rem;
+  }
+  .review {
+    background: #fdfcf9;
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 15px;
+    border-left: 4px solid #c4a484;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  }
+  .rating { 
+    color: #d4a017; 
+    margin-bottom: 8px; 
+    font-size: 1.2rem;
+  }
+  .review strong { 
+    color: #7f5a36; 
+    font-size: 1.1rem;
+  }
+  .review-form { 
+    margin-top: 25px;
+    padding: 20px;
+    background: #f9f7f4;
+    border-radius: 12px;
+  }
+  .review-form h3 {
+    margin: 0 0 15px;
+    color: #8B4513;
+  }
+  .review-form textarea {
+    width: 100%;
+    min-height: 100px;
+    border: 2px solid #e8dcc6;
+    border-radius: 12px;
+    padding: 15px;
+    resize: vertical;
+    font-family: inherit;
+    font-size: 1rem;
+    background: #faf8f4;
+  }
+  .review-form textarea:focus {
+    outline: none;
+    border-color: #8B4513;
+  }
+  .review-form button { margin-top: 15px; }
+  .stars {
+    display: flex;
+    gap: 8px;
+    font-size: 2rem;
+    cursor: pointer;
+    margin-bottom: 15px;
+  }
+  .stars span {
+    color: #ddd;
+    transition: color 0.2s;
+  }
+  .stars span.active {
+    color: #d4a017;
+  }
+  .back-btn { 
+    color: #faf8f4; 
+    text-decoration: none; 
+    font-weight: bold; 
+  }
+  .back-btn:hover { 
+    color: #fff3e0; 
+  }
+  .btn-group {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 30px;
+  }
+  .btn-group .btn {
+    flex: 1;
+    min-width: 150px;
+    max-width: 200px;
+  }
+  .usage-type {
+    background: rgba(139, 69, 19, 0.05);
+    padding: 12px;
+    border-radius: 8px;
+    margin: 10px 0;
+    font-weight: 500;
+  }
+
+  @media (max-width: 768px) {
+    .header {
+      flex-direction: column;
+    }
+    .gallery-section, .item-info {
+      min-width: 100%;
+      max-width: 100%;
+    }
+    .btn-group {
+      flex-direction: column;
+    }
+    .btn-group .btn {
+      max-width: 100%;
+    }
+    h1 {
+      font-size: 1.8rem;
+    }
+    .price {
+      font-size: 1.5rem;
+    }
+    .info-line {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .info-label {
+      min-width: auto;
+      margin-bottom: 5px;
+    }
+  }
+
+  .contact-info {
+    margin: 25px 0;
+    padding: 0;
+    background: none;
+    border-radius: 0;
+  }
+  .contact-info h4 {
+    margin: 0 0 15px;
+    font-size: 1.3rem;
+    color: #8B4513;
+  }
+
+  /* Custom Alert Modal */
+  .alert-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+    backdrop-filter: blur(4px);
+  }
+
+  .alert-modal {
+    background: #faf8f4;
+    padding: 40px 30px;
+    border-radius: 20px;
+    box-shadow: 0 15px 40px rgba(139, 69, 19, 0.3);
+    text-align: center;
+    max-width: 480px;
+    width: 90%;
+    margin: 20px;
+    border: 2px solid #8B4513;
+    position: relative;
+    animation: alertSlideIn 0.3s ease-out;
+  }
+
+  @keyframes alertSlideIn {
+    from {
+      opacity: 0;
+      transform: translateY(-50px) scale(0.9);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  .alert-icon {
+    font-size: 4rem;
+    color: #28a745;
+    margin-bottom: 20px;
+    display: block;
+  }
+
+  .alert-title {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #8B4513;
+    margin: 0 0 15px 0;
+  }
+
+  .alert-message {
+    font-size: 1.1rem;
+    color: #5d4e37;
+    line-height: 1.6;
+    margin: 15px 0;
+  }
+
+  .alert-request-id {
+    background: rgba(139, 69, 19, 0.1);
+    padding: 15px;
+    border-radius: 12px;
+    margin: 20px 0;
+    border-left: 4px solid #8B4513;
+  }
+
+  .alert-request-id .id-label {
+    font-weight: bold;
+    color: #8B4513;
+    font-size: 1rem;
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  .alert-request-id .id-value {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #a0522d;
+    font-family: 'Courier New', monospace;
+    letter-spacing: 1px;
+  }
+
+  .alert-warning {
+    background: rgba(255, 193, 7, 0.1);
+    border: 1px solid #ffc107;
+    padding: 15px;
+    border-radius: 10px;
+    margin: 20px 0;
+    color: #856404;
+    font-weight: 500;
+  }
+
+  .alert-button {
+    background: #8B4513;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 25px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    margin: 10px 5px;
+    transition: all 0.3s;
+  }
+
+  .alert-button:hover {
+    background: #5d3f28;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(139, 69, 19, 0.4);
+  }
+
+  .alert-countdown {
+    font-size: 0.9rem;
+    color: #666;
+    margin-top: 15px;
+    font-style: italic;
+  }
+</style>
+</head>
+<body>
+<h1 style="text-align:center; color: #8B4513; margin-bottom: 30px;">รายละเอียดอุปกรณ์เช่า</h1>
+<div class="container" id="detailContainer"></div>
+
+<div class="btn-group"> 
+  <button class="btn"><a href="../index.html" class="back-btn">หน้าหลัก</a></button>
+  <button class="btn"><a href="p1.html" class="back-btn">รายการอุปกรณ์</a></button>
+</div>
+
+<script>
+// --- ดึง query param ---
+function getQueryParam(param) {
+  const urlParams = new URLSearchParams(window.location.search);
+  return urlParams.get(param);
+}
+
+const id = getQueryParam('id');
+const detailContainer = document.getElementById('detailContainer');
+
+// --- โหลดรายละเอียดอุปกรณ์ ---
+function loadItemDetail() {
+  const rentals = JSON.parse(localStorage.getItem('rentals') || '[]');
+  const item = rentals.find(r => String(r.id) === String(id));
+  
+  if (!item) { 
+    detailContainer.innerHTML = '<p style="text-align:center; padding: 40px; color: #666;">ไม่พบข้อมูลอุปกรณ์ที่เลือก</p>'; 
+    return; 
+  }
+
+  // แปลงประเภทการใช้งาน
+  const usageTypeMap = {
+    'work': 'ทำงานทั่วไป',
+    'edit': 'ตัดต่อ / กราฟิก', 
+    'game': 'เล่นเกม / มัลติมีเดีย',
+    'special': 'งานเฉพาะทาง'
+  };
+
+  const usageTypeText = usageTypeMap[item.usageType] || item.usageType || 'ไม่ระบุ';
+
+  detailContainer.innerHTML = `
+    <div class="header">
+      <div class="gallery-section">
+        <div class="gallery">
+          <img id="galleryImage" class="main-image" src="${item.images && item.images[0] ? item.images[0] : 'https://via.placeholder.com/400x300?text=ไม่มีรูปภาพ'}" alt="รูปอุปกรณ์">
+          ${item.images && item.images.length > 1 ? `
+            <button class="prev" onclick="changeImage(-1)">‹</button>
+            <button class="next" onclick="changeImage(1)">›</button>
+          ` : ''}
+        </div>
+        <div class="thumbnail-gallery" id="thumbnailGallery"></div>
+      </div>
+      
+      <div class="item-info">
+        <div class="category-badge">${item.category || 'ไม่ระบุหมวดหมู่'}</div>
+        <h1>${item.deviceName || 'ไม่ระบุชื่อ'}</h1>
+        
+        <div class="usage-type">
+          <span class="info-label">ประเภทการใช้งาน:</span>
+          <span class="info-value">${usageTypeText}</span>
+        </div>
+        
+        <div class="price">
+          ฿${(item.pricePerDay || 0).toLocaleString()} / วัน
+        </div>
+        
+        <div class="info-section">
+          <div class="info-line">
+            <span class="info-label">สถานที่:</span>
+            <span class="info-value">${item.location || 'ไม่ระบุ'}</span>
+          </div>
+          <div class="info-line">
+            <span class="info-label">จำนวนวัน:</span>
+            <span class="info-value">${item.rentalDays || 1} วัน</span>
+          </div>
+          <div class="info-line">
+            <span class="info-label">ราคารวม:</span>
+            <span class="info-value">฿${((item.pricePerDay || 0) * (item.rentalDays || 1)).toLocaleString()}</span>
+          </div>
+        </div>
+        
+        <div class="contact-info">
+          <h4>ข้อมูลผู้ให้เช่า</h4>
+          <div class="info-line">
+            <span class="info-label">ชื่อ:</span>
+            <span class="info-value">${item.ownerName || 'ไม่ระบุ'}</span>
+          </div>
+          <div class="info-line">
+            <span class="info-label">อีเมล:</span>
+            <span class="info-value">${item.email || 'ไม่ระบุ'}</span>
+          </div>
+        </div>
+        
+        <button class="btn" onclick="handleRentalRequest('${item.id}')">เช่าเลย</button>
+      </div>
+    </div>
+    
+    ${item.description ? `
+      <div class="description-section">
+        <h3>รายละเอียดเพิ่มเติม</h3>
+        <p class="description-text">${item.description.replace(/\n/g,'<br>')}</p>
+      </div>
+    ` : ''}
+    
+    <hr>
+    
+    <div class="reviews">
+      <h2>รีวิวจากผู้ใช้งาน</h2>
+      <div id="reviewsList"></div>
+      <div class="review-form">
+        <h3>เขียนรีวิวของคุณ</h3>
+        <div class="stars" id="starRating"></div>
+        <textarea id="reviewText" placeholder="แชร์ประสบการณ์การใช้งาน..."></textarea>
+        <button class="btn" onclick="submitReview()">ส่งรีวิว</button>
+      </div>
+    </div>
+  `;
+
+  renderReviews(item.id);
+  renderStars();
+  setupGallery(item.images || []);
+}
+
+// --- แกลเลอรี ---
+let galleryImages = [];
+let currentImageIndex = 0;
+
+function setupGallery(images) {
+  galleryImages = images.length ? images : ['https://via.placeholder.com/400x300?text=ไม่มีรูปภาพ'];
+  currentImageIndex = 0;
+  
+  // แสดงรูปหลัก
+  const mainImage = document.getElementById('galleryImage');
+  if (mainImage) {
+    mainImage.src = galleryImages[0];
+  }
+  
+  // สร้าง thumbnail gallery
+  const thumbnailGallery = document.getElementById('thumbnailGallery');
+  if (thumbnailGallery && galleryImages.length > 1) {
+    thumbnailGallery.innerHTML = '';
+    galleryImages.forEach((img, index) => {
+      const thumb = document.createElement('img');
+      thumb.src = img;
+      thumb.className = `thumbnail ${index === 0 ? 'active' : ''}`;
+      thumb.onclick = () => selectImage(index);
+      thumbnailGallery.appendChild(thumb);
+    });
+  }
+}
+
+function selectImage(index) {
+  currentImageIndex = index;
+  const mainImage = document.getElementById('galleryImage');
+  if (mainImage) {
+    mainImage.src = galleryImages[index];
+  }
+  
+  // อัปเดต thumbnail active
+  document.querySelectorAll('.thumbnail').forEach((thumb, i) => {
+    thumb.classList.toggle('active', i === index);
+  });
+}
+
+function changeImage(direction) {
+  if (!galleryImages.length) return;
+  currentImageIndex = (currentImageIndex + direction + galleryImages.length) % galleryImages.length;
+  selectImage(currentImageIndex);
+}
+
+// --- ระบบรีวิว ---
+let currentRating = 0;
+
+function renderReviews(itemId) {
+  const reviewsList = document.getElementById('reviewsList');
+  if (!reviewsList) {
+    console.error('reviewsList element not found');
+    return;
+  }
+
+  console.log('Rendering reviews for itemId:', itemId); // Debug
+
+  try {
+    const reviews = JSON.parse(localStorage.getItem('reviews') || '[]');
+    console.log('All reviews from localStorage:', reviews); // Debug
+    
+    const filtered = reviews.filter(r => String(r.itemId) === String(itemId));
+    console.log('Filtered reviews:', filtered); // Debug
+
+    if (filtered.length === 0) {
+      reviewsList.innerHTML = '<p style="color: #666; text-align: center; padding: 20px;">ยังไม่มีรีวิวสำหรับอุปกรณ์นี้</p>';
+      return;
+    }
+
+    reviewsList.innerHTML = '';
+    filtered.forEach((r, index) => {
+      console.log(`Rendering review ${index}:`, r); // Debug
+      
+      const stars = '⭐'.repeat(r.rating || 0);
+      const div = document.createElement('div');
+      div.className = 'review';
+      div.innerHTML = `
+        <div class="rating">${stars} (${r.rating || 0}/5)</div>
+        <p><strong>${r.name || 'ผู้ใช้งาน'}</strong> – ${r.text || '(ไม่มีข้อความ)'}</p>
+        <small style="color:#777;">${r.date || 'ไม่ระบุเวลา'}</small>
+      `;
+      reviewsList.appendChild(div);
+    });
+    
+    console.log(`Successfully rendered ${filtered.length} reviews`); // Debug
+    
+  } catch (error) {
+    console.error('Error rendering reviews:', error);
+    reviewsList.innerHTML = '<p style="color: red; text-align: center; padding: 20px;">เกิดข้อผิดพลาดในการโหลดรีวิว</p>';
+  }
+}
+
+function renderStars() {
+  const starContainer = document.getElementById('starRating');
+  if (!starContainer) return;
+  
+  starContainer.innerHTML = '';
+  for (let i=1;i<=5;i++){
+    const span = document.createElement('span');
+    span.textContent = '★';
+    span.dataset.value = i;
+    span.addEventListener('click',()=>{currentRating=i;updateStars();});
+    span.addEventListener('mouseover',()=>updateStars(i));
+    span.addEventListener('mouseleave',()=>updateStars());
+    starContainer.appendChild(span);
+  }
+  updateStars();
+}
+
+function updateStars(hoverValue=0){
+  document.querySelectorAll('#starRating span').forEach(s=>{
+    const val = parseInt(s.dataset.value);
+    s.classList.toggle('active', val <= (hoverValue || currentRating));
+  });
+}
+
+function submitReview(){
+  console.log('submitReview called, currentRating:', currentRating);
+  
+  if(currentRating === 0){ 
+    alert('กรุณาเลือกดาวก่อนส่งรีวิว'); 
+    return; 
+  }
+
+  const itemId = id;
+  console.log('Item ID:', itemId);
+  
+  const name = prompt("กรุณากรอกชื่อของคุณ:", "ผู้ใช้งาน");
+  if (name === null) {
+    console.log('User cancelled name input');
+    return; 
+  }
+  
+  const reviewTextElement = document.getElementById('reviewText');
+  if (!reviewTextElement) {
+    console.error('reviewText element not found');
+    alert('เกิดข้อผิดพลาด: ไม่พบช่องข้อความ');
+    return;
+  }
+  
+  const text = reviewTextElement.value.trim();
+  console.log('Review text length:', text.length);
+
+  try {
+    // ตรวจสอบ localStorage space
+    const storageUsed = JSON.stringify(localStorage).length;
+    console.log('Current localStorage usage (chars):', storageUsed);
+    
+    if (storageUsed > 4000000) { // ~4MB
+      alert('พื้นที่จัดเก็บข้อมูลเต็ม กรุณาลบรีวิวเก่าหรือล้างข้อมูล');
+      return;
+    }
+
+    const today = new Date();
+    const dateStr = today.toLocaleString('th-TH', {
+      year: 'numeric',
+      month: 'long', 
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+
+    // โหลดรีวิวที่มีอยู่
+    let reviews = [];
+    const existingReviews = localStorage.getItem('reviews');
+    
+    if (existingReviews) {
+      reviews = JSON.parse(existingReviews);
+    }
+    
+    // จำกัดจำนวนรีวิวต่อสินค้า (เก็บแค่ 20 รีวิวล่าสุด)
+    const itemReviews = reviews.filter(r => String(r.itemId) === String(itemId));
+    if (itemReviews.length >= 20) {
+      // ลบรีวิวเก่าสุดของสินค้านี้
+      const oldestReview = itemReviews.sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0))[0];
+      reviews = reviews.filter(r => r !== oldestReview);
+    }
+    
+    const newReview = {
+      itemId: String(itemId),
+      name: (name || "ผู้ใช้งาน").substring(0, 50), // จำกัดความยาวชื่อ
+      text: (text || "(ไม่มีข้อความ)").substring(0, 500), // จำกัดความยาวข้อความ
+      rating: Number(currentRating),
+      date: dateStr,
+      timestamp: Date.now()
+    };
+    
+    console.log('New review object:', newReview);
+    
+    reviews.push(newReview);
+    
+    // ลองบันทึกและจัดการ quota error
+    try {
+      localStorage.setItem('reviews', JSON.stringify(reviews));
+      console.log('Reviews saved successfully');
+      
+    } catch (quotaError) {
+      console.error('Quota exceeded, trying cleanup...');
+      
+      // ลบรีวิวเก่า (เก็บแค่ 50 รีวิวล่าสุด)
+      const sortedReviews = reviews.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+      const limitedReviews = sortedReviews.slice(0, 50);
+      
+      try {
+        localStorage.setItem('reviews', JSON.stringify(limitedReviews));
+        console.log('Reviews saved after cleanup');
+      } catch (finalError) {
+        console.error('Still failed after cleanup:', finalError);
+        alert('พื้นที่จัดเก็บข้อมูลไม่เพียงพอ กรุณาล้างข้อมูลในเบราว์เซอร์');
+        return;
+      }
+    }
+    
+    // Clear form
+    reviewTextElement.value = '';
+    currentRating = 0; 
+    updateStars();
+    
+    // Refresh reviews display
+    renderReviews(itemId);
+    alert('ส่งรีวิวเรียบร้อยแล้ว!');
+    
+  } catch (error) {
+    console.error('Detailed error in submitReview:', error);
+    
+    if (error.name === 'QuotaExceededError') {
+      alert('พื้นที่จัดเก็บข้อมูลเต็ม กรุณาลบข้อมูลเก่าในเบราว์เซอร์\n\nไปที่ Settings > Privacy > Clear browsing data');
+    } else {
+      alert('เกิดข้อผิดพลาดในการบันทึกรีวิว: ' + error.message);
+    }
+  }
+}
+
+// --- ปุ่มเช่า ---
+function handleRentalRequest(itemId) {
+  const rentals = JSON.parse(localStorage.getItem('rentals') || '[]');
+  const item = rentals.find(r => String(r.id) === String(itemId));
+  if (!item) return alert("ไม่พบข้อมูลอุปกรณ์");
+
+  let requests = JSON.parse(localStorage.getItem('rentalRequests') || '[]');
+  const today = new Date();
+  const endDate = new Date(today.getTime() + (item.rentalDays || 1) * 24*60*60*1000);
+  const requestId = 'REQ-' + Date.now();
+
+  const newRequest = {
+    id: requestId,
+    deviceName: item.deviceName,
+    category: item.category,
+    pricePerDay: item.pricePerDay,
+    rentalDays: item.rentalDays || 1,
+    totalPrice: (item.pricePerDay || 0) * (item.rentalDays || 1),
+    description: item.description || '',
+    location: item.location,
+    ownerName: item.ownerName,
+    email: item.email,
+    images: item.images || [],
+    usageType: item.usageType,
+    startDate: today.toISOString().split('T')[0],
+    endDate: endDate.toISOString().split('T')[0],
+    status: "รอผู้ปล่อยเช่ายืนยัน",
+    requestDate: today.toISOString()
+  };
+
+  requests.push(newRequest);
+  localStorage.setItem('rentalRequests', JSON.stringify(requests));
+  
+  showCustomAlert(requestId);
+}
+
+// --- Custom Alert Modal ---
+function showCustomAlert(requestId) {
+  // สร้าง overlay
+  const overlay = document.createElement('div');
+  overlay.className = 'alert-overlay';
+  
+  // สร้าง modal
+  const modal = document.createElement('div');
+  modal.className = 'alert-modal';
+  
+  modal.innerHTML = `
+    <div class="alert-icon">✅</div>
+    <h2 class="alert-title">ส่งคำขอเช่าเรียบร้อยแล้ว!</h2>
+    
+    <div class="alert-request-id">
+      <div class="id-label">รหัสคำขอของคุณ:</div>
+      <div class="id-value">${requestId}</div>
+    </div>
+    
+    <div class="alert-warning">
+      ⚠️ กรุณาจดจำหรือบันทึกรหัสคำขอนี้ไว้ เพื่อใช้ในการติดตามสถานะการเช่า
+    </div>
+    
+    <p class="alert-message">
+      คุณสามารถใช้รหัสนี้ในการติดตามสถานะการเช่าได้ในหน้า "ติดตามการเช่า"<br>
+      ระบบจะพาคุณไปยังหน้าติดตามโดยอัตโนมัติ
+    </p>
+    
+    <button class="alert-button" onclick="goToTracking('${requestId}')">
+      ไปหน้าติดตามเลย
+    </button>
+    <button class="alert-button" onclick="closeAlert()">
+      ปิดหน้าต่าง
+    </button>
+    
+    <div class="alert-countdown">
+      <span id="countdown">3</span> วินาที
+    </div>
+  `;
+  
+  overlay.appendChild(modal);
+  document.body.appendChild(overlay);
+  
+  // เริ่มนับถอยหลัง
+  startCountdown();
+  
+  // ปิด modal เมื่อคลิกที่ overlay (นอก modal)
+  overlay.addEventListener('click', (e) => {
+    if (e.target === overlay) {
+      closeAlert();
+    }
+  });
+}
+
+function startCountdown() {
+  let count = 30;
+  const countdownEl = document.getElementById('countdown');
+  
+  const timer = setInterval(() => {
+    count--;
+    if (countdownEl) {
+      countdownEl.textContent = count;
+    }
+    
+    if (count <= 0) {
+      clearInterval(timer);
+      // อัตโนมัติไปหน้า tracking
+      const requestId = document.querySelector('.id-value')?.textContent;
+      if (requestId) {
+        window.location.href = `track.html?id=${requestId}`;
+      }
+    }
+  }, 1000);
+  
+  // เก็บ timer ID ไว้สำหรับยกเลิกถ้าจำเป็น
+  window.alertTimer = timer;
+}
+
+function goToTracking(requestId) {
+  if (window.alertTimer) {
+    clearInterval(window.alertTimer);
+  }
+  window.location.href = `track.html?id=${requestId}`;
+}
+
+function closeAlert() {
+  if (window.alertTimer) {
+    clearInterval(window.alertTimer);
+  }
+  const overlay = document.querySelector('.alert-overlay');
+  if (overlay) {
+    overlay.remove();
+  }
+}
+
+// --- โหลดหน้ารายละเอียดอุปกรณ์ ---
+if(!id){
+  detailContainer.innerHTML = '<p style="text-align:center; padding: 40px; color: #666;">ไม่พบข้อมูลอุปกรณ์</p>';
+} else {
+  loadItemDetail();
+}
+</script>
+</body>
+</html>

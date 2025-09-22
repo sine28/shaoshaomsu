@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ติดตามสถานะการเช่า</title>
+<style>
+    body { font-family: Arial, sans-serif; background-color: #f9fafb; margin: 0; padding: 0; }
+    .container { max-width: 420px; margin: auto; }
+    .header { background-color: white; padding: 12px 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    .product-card, .progress-card, .info-card {
+        background-color: white; margin: 16px; border-radius: 16px; padding: 16px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .status { background-color: #dcfce7; color: #15803d; font-size: 12px; padding: 4px 8px; border-radius: 999px; }
+    .steps { display: flex; align-items: center; justify-content: space-between; }
+    .step { display: flex; flex-direction: column; align-items: center; font-size: 12px; }
+    .circle { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; margin-bottom: 4px; }
+    .circle.green { background-color: #22c55e; }
+    .circle.gray { background-color: #e5e7eb; color: #9ca3af; }
+    .line { flex: 1; height: 2px; }
+    .line.green { background-color: #22c55e; }
+    .line.gray { background-color: #e5e7eb; }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header"><h3>ติดตามสถานะการเช่า</h3></div>
+
+    <div class="product-card">
+        <h2 id="productName"></h2>
+        <p id="productPrice"></p>
+        <p id="productDates"></p>
+        <p id="productNote"></p>
+        <span class="status" id="productStatus"></span>
+    </div>
+
+    <div class="progress-card">
+        <div class="steps">
+            <div class="step"><div class="circle gray"></div><span>รอยืนยัน</span></div>
+            <div class="line gray"></div>
+            <div class="step"><div class="circle gray"></div><span>นัดรับ-ส่ง</span></div>
+            <div class="line gray"></div>
+            <div class="step"><div class="circle gray"></div><span>ใช้งาน</span></div>
+            <div class="line gray"></div>
+            <div class="step"><div class="circle gray"></div><span>คืนเรียบร้อย</span></div>
+        </div>
+    </div>
+
+    <div class="info-card">
+        <p>📅 ระยะเวลา: <span id="rentalDays"></span></p>
+        <p>💰 ราคารวม: <span id="totalPrice"></span></p>
+        <p>⏳ เวลาที่เหลือ: <span id="timeLeft"></span></p>
+    </div>
+</div>
+
+<script>
+function getQueryParam(name) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(name);
+}
+
+function updateProgressUI(status) {
+    const circles = document.querySelectorAll('.circle');
+    const lines = document.querySelectorAll('.line');
+
+    let stepIndex = 0;
+    if (status === "รอผู้ปล่อยเช่ายืนยัน") stepIndex = 0;
+    else if (status === "นัดรับ-ส่งอุปกรณ์") stepIndex = 1;
+    else if (status === "กำลังใช้งาน") stepIndex = 2;
+    else if (status === "คืนอุปกรณ์เรียบร้อย") stepIndex = 3;
+
+    circles.forEach((circle, index) => {
+        circle.classList.toggle('green', index <= stepIndex);
+        circle.classList.toggle('gray', index > stepIndex);
+        circle.textContent = index <= stepIndex ? '✔' : '○';
+    });
+
+    lines.forEach((line, index) => {
+        line.classList.toggle('green', index < stepIndex);
+        line.classList.toggle('gray', index >= stepIndex);
+    });
+}
+
+function startCountdown(endDate) {
+    const timeLeftEl = document.getElementById('timeLeft');
+    function updateCountdown() {
+        const now = new Date();
+        const end = new Date(endDate);
+        const diff = end - now;
+        if (diff <= 0) {
+            timeLeftEl.textContent = "หมดเวลาการเช่า";
+            timeLeftEl.style.color = "red";
+            clearInterval(timer);
+            return;
+        }
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+        const minutes = Math.floor((diff / (1000 * 60)) % 60);
+        timeLeftEl.textContent = `${days} วัน ${hours} ชม. ${minutes} นาที`;
+    }
+    updateCountdown();
+    const timer = setInterval(updateCountdown, 1000);
+}
+
+const id = getQueryParam('id');
+if (id) {
+    const requests = JSON.parse(localStorage.getItem('rentalRequests') || '[]');
+    const item = requests.find(r => r.id == id);
+    if (item) {
+        document.getElementById('productName').textContent = item.deviceName;
+        document.getElementById('productPrice').textContent = `${item.pricePerDay} บาท/วัน`;
+        document.getElementById('productDates').textContent = `${item.startDate} - ${item.endDate}`;
+        document.getElementById('productNote').textContent = item.description;
+        document.getElementById('productStatus').textContent = item.status;
+        document.getElementById('rentalDays').textContent = `${item.rentalDays} วัน`;
+        document.getElementById('totalPrice').textContent = `${item.pricePerDay * item.rentalDays} บาท`;
+        updateProgressUI(item.status);
+        startCountdown(item.endDate);
+    } else {
+        alert("ไม่พบข้อมูลการเช่า");
+    }
+} else {
+    alert("ไม่มีรหัสการเช่า");
+}
+</script>
+
+</body>
+</html>
